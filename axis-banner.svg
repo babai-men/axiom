@@ -35,6 +35,6 @@
     <text x="0" y="20" fill="#c5a059" font-weight="bold">[ PROTOCOL METRICS ]</text>
     <text x="0" y="60">TAX FEE: <tspan fill="#f4f4f5">0.1% FIXED</tspan></text>
     <text x="0" y="90">BURN RATE: <tspan fill="#f4f4f5">60% AUTOMATIC</tspan></text>
-    <text x="0" y="120">BOUNTY: <tspan fill="#4ade80">10% PUBLIC CRANK</tspan></text>
+    <text x="0" y="120">BOUNTY: <tspan fill="#4ade80">15% PUBLIC CRANK</tspan></text>
   </g>
 </svg>
