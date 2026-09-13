@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AXIS Protocol | Autonomous Volume Flywheel</title>
+    <title>AXIOM Protocol | Autonomous Volume Flywheel</title>
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="axis-logo.svg">
+    <link rel="icon" type="image/svg+xml" href="axiom-logo.svg">
     <style>
         :root {
             /* Base surfaces */
@@ -23,11 +23,11 @@
             --text-muted: #8c8d93;
             --text-faint: #5c5d63;
 
-            /* Flywheel accents — each carries a fixed meaning throughout the page */
-            --accent-gold: #c9a227;   /* brand / dev treasury (30%) */
+            /* Flywheel accents — 70% Burn / 20% Bounty / 10% Dev Treasury */
+            --accent-ember: #e2623d;  /* burn (70%) */
+            --accent-mint: #6fcf97;   /* bounty / reward (20%) */
+            --accent-gold: #c9a227;   /* brand / dev treasury (10%) */
             --accent-gold-hover: #e0b933;
-            --accent-ember: #e2623d;  /* burn (60%) */
-            --accent-mint: #6fcf97;   /* bounty / reward (10%) */
 
             --font-display: 'Space Grotesk', -apple-system, sans-serif;
             --font-body: 'Inter', -apple-system, sans-serif;
@@ -91,8 +91,8 @@
         }
 
         .logo img {
-            width: 150px;
-            height: 150px;
+            width: 36px;
+            height: 36px;
             display: block;
         }
 
@@ -105,7 +105,7 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .banner-wrap svg {
+        .banner-wrap img {
             display: block;
             width: 100%;
             height: auto;
@@ -205,12 +205,11 @@
         .hero p {
             font-size: 17px;
             color: var(--text-muted);
-            max-width: 620px;
+            max-width: 640px;
             margin: 0 auto 8px;
         }
 
-        /* SIGNATURE ELEMENT — the flywheel: a literal, rotating diagram of the
-           0.1% tax split that mirrors the copy below it (60 / 30 / 10). */
+        /* FLYWHEEL ANIMATED DIAGRAM (70% Burn / 20% Bounty / 10% Dev Treasury) */
         .flywheel-section {
             display: flex;
             flex-direction: column;
@@ -427,7 +426,7 @@
             font-size: 15px;
         }
 
-        /* MECHANISM CARDS — color-coded to match the flywheel legend */
+        /* MECHANISM CARDS */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -446,8 +445,8 @@
         .feature-card:hover { transform: translateY(-3px); }
 
         .feature-card.ember { --card-accent: var(--accent-ember); }
-        .feature-card.gold { --card-accent: var(--accent-gold); }
         .feature-card.mint { --card-accent: var(--accent-mint); }
+        .feature-card.gold { --card-accent: var(--accent-gold); }
 
         .feature-percent {
             font-family: var(--font-display);
@@ -460,7 +459,7 @@
         .feature-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
         .feature-desc { font-size: 14px; color: var(--text-muted); }
 
-        /* HOW IT WORKS (STEPS) — a real sequence, so numbering earns its place */
+        /* STEPS */
         .steps-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -640,7 +639,7 @@
 
 <div class="container">
     <nav>
-        <div class="logo"><img src="axis-logo.svg" alt="AXIS logo">$AXIS</div>
+        <div class="logo"><img src="axiom-logo.svg" alt="AXIOM logo">$AXIOM</div>
         <ul class="nav-links">
             <li><a href="#dashboard">Дашборд</a></li>
             <li><a href="#mechanism">Механика</a></li>
@@ -654,38 +653,41 @@
 
     <!-- BANNER -->
     <div class="banner-wrap">
-        <img src="axis-banner.svg" alt="AXIS Protocol — Autonomous Volume Flywheel, Solana Token-2022">
+        <img src="axiom-banner.svg" alt="AXIOM Protocol — Autonomous Volume Flywheel, Solana Token-2022">
     </div>
 
     <!-- HERO -->
     <section class="hero" style="border-top: none;">
         <div class="badge">Solana Token-2022 Architecture</div>
         <h1>Автономный <em>дефляционный</em><br>маховик</h1>
-        <p>AXIS ($AXIS) — самоподдерживающийся DeFi-протокол. Каждый перевод генерирует фиксированный налог 0.1%, который непрерывно сокращает эмиссию и выплачивает 10% вознаграждения за его сбор.</p>
+        <p>AXIOM ($AXIOM) — самоподдерживающийся DeFi-протокол. Каждый перевод генерирует фиксированный налог 0.05%, который непрерывно сокращает эмиссию (70% Burn) и выплачивает 20% вознаграждения за его сбор.</p>
 
-        <!-- Signature element: the flywheel literally shows the 60/30/10 split in motion -->
+        <!-- Signature element: flywheel shows exact 70/20/10 split in motion -->
         <div class="flywheel-section">
             <div class="flywheel">
                 <svg viewBox="0 0 220 220">
                     <circle cx="110" cy="110" r="98" fill="none" stroke="#1b1c20" stroke-width="14"/>
                     <g class="flywheel-ring">
+                        <!-- 70% Burn (Ember) = 431.0px -->
                         <circle cx="110" cy="110" r="98" fill="none" stroke="#e2623d" stroke-width="14"
-                                stroke-dasharray="369.5 615.8" stroke-dashoffset="0" stroke-linecap="round"/>
-                        <circle cx="110" cy="110" r="98" fill="none" stroke="#c9a227" stroke-width="14"
-                                stroke-dasharray="184.7 615.8" stroke-dashoffset="-369.5" stroke-linecap="round"/>
+                                stroke-dasharray="431.0 615.8" stroke-dashoffset="0" stroke-linecap="round"/>
+                        <!-- 20% Public Bounty (Mint) = 123.15px -->
                         <circle cx="110" cy="110" r="98" fill="none" stroke="#6fcf97" stroke-width="14"
-                                stroke-dasharray="61.6 615.8" stroke-dashoffset="-554.2" stroke-linecap="round"/>
+                                stroke-dasharray="123.15 615.8" stroke-dashoffset="-431.0" stroke-linecap="round"/>
+                        <!-- 10% Dev Treasury (Gold) = 61.6px -->
+                        <circle cx="110" cy="110" r="98" fill="none" stroke="#c9a227" stroke-width="14"
+                                stroke-dasharray="61.6 615.8" stroke-dashoffset="-554.15" stroke-linecap="round"/>
                     </g>
                 </svg>
                 <div class="flywheel-core">
-                    <div class="tax">0.1%</div>
+                    <div class="tax">0.05%</div>
                     <div class="tax-label">Tax / tx</div>
                 </div>
             </div>
             <div class="flywheel-legend">
-                <span><i class="sw" style="background:var(--accent-ember)"></i>Burn 60%</span>
-                <span><i class="sw" style="background:var(--accent-gold)"></i>Treasury 25%</span>
-                <span><i class="sw" style="background:var(--accent-mint)"></i>Bounty 15%</span>
+                <span><i class="sw" style="background:var(--accent-ember)"></i>Burn 70%</span>
+                <span><i class="sw" style="background:var(--accent-mint)"></i>Bounty 20%</span>
+                <span><i class="sw" style="background:var(--accent-gold)"></i>Dev Vault 10%</span>
             </div>
         </div>
     </section>
@@ -700,14 +702,14 @@
             <div class="stats-grid">
                 <div class="stat-card full">
                     <div class="stat-label">Накоплено налога к сбору (Vault)</div>
-                    <div id="vaultBalance" class="stat-value gold">0.00 $AXIS</div>
+                    <div id="vaultBalance" class="stat-value gold">0.00 $AXIOM</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Твой Bounty (10%)</div>
+                    <div class="stat-label">Твой Bounty (20%)</div>
                     <div id="bountyAmount" class="stat-value mint">0.00</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Сгорает (60%)</div>
+                    <div class="stat-label">Сгорает (70%)</div>
                     <div id="burnAmount" class="stat-value ember">0.00</div>
                 </div>
             </div>
@@ -720,23 +722,23 @@
     <!-- MECHANISM SPLIT -->
     <section id="mechanism">
         <span class="section-eyebrow">Распределение</span>
-        <h2 class="section-title">Куда уходит налог 0.1%</h2>
+        <h2 class="section-title">Куда уходит налог 0.05%</h2>
         <p class="section-subtitle">Стандарт Solana Token-2022 позволяет удерживать комиссию непосредственно на токен-аккаунтах без участия централизованных операторов.</p>
         <div class="cards-grid">
             <div class="feature-card ember">
-                <div class="feature-percent">60%</div>
+                <div class="feature-percent">70%</div>
                 <div class="feature-title">Безвозвратный Burn</div>
-                <div class="feature-desc">Токены навсегда изымаются из обращения, математически увеличивая ценность оставшихся $AXIS при каждом свапе.</div>
-            </div>
-            <div class="feature-card gold">
-                <div class="feature-percent">25%</div>
-                <div class="feature-title">Dev Treasury</div>
-                <div class="feature-desc">Направляется на поддержание экосистемы, серверную инфраструктуру, ликвидность и маркетмейкинг.</div>
+                <div class="feature-desc">Токены навсегда изымаются из обращения, математически увеличивая ценность оставшихся $AXIOM при каждом свапе.</div>
             </div>
             <div class="feature-card mint">
-                <div class="feature-percent">15%</div>
+                <div class="feature-percent">20%</div>
                 <div class="feature-title">Public Bounty</div>
                 <div class="feature-desc">Мгновенное вознаграждение пользователю или MEV-боту, запустившему исполнение сборщика (Crank).</div>
+            </div>
+            <div class="feature-card gold">
+                <div class="feature-percent">10%</div>
+                <div class="feature-title">Dev Treasury</div>
+                <div class="feature-desc">Направляется на поддержание инфраструктуры, ликвидность, серверы и дальнейшее развитие проекта.</div>
             </div>
         </div>
     </section>
@@ -750,7 +752,7 @@
             <div class="step-card">
                 <div class="step-num">01 · Trade</div>
                 <div class="step-title">Торговля & Свапы</div>
-                <div class="step-desc">При каждой транзакции $AXIS в пуле Meteora DLMM или между кошельками автоматически удерживается 0.1%.</div>
+                <div class="step-desc">При каждой транзакции $AXIOM в пуле Meteora DLMM или между кошельками автоматически удерживается 0.05%.</div>
             </div>
             <div class="step-card">
                 <div class="step-num">02 · Accrue</div>
@@ -765,7 +767,7 @@
             <div class="step-card">
                 <div class="step-num">04 · Split</div>
                 <div class="step-title">Сплит & Сжигание</div>
-                <div class="step-desc">Контракт распределяет налог: 60% сгорает, 30% идет в Dev-фонд, а вы получаете 10% Bounty.</div>
+                <div class="step-desc">Контракт распределяет налог: 70% сгорает, 10% идет в Dev-фонд, а вы получаете 20% Bounty.</div>
             </div>
         </div>
     </section>
@@ -778,7 +780,7 @@
         <div class="tokenomics-table">
             <div class="table-row">
                 <span class="table-key">Общее предложение (Total Supply)</span>
-                <span class="table-val">10 000 000 000 $AXIS</span>
+                <span class="table-val">10 000 000 000 $AXIOM</span>
             </div>
             <div class="table-row">
                 <span class="table-key">Стандарт токена</span>
@@ -786,7 +788,7 @@
             </div>
             <div class="table-row">
                 <span class="table-key">Налог на перевод (Transfer Fee)</span>
-                <span class="table-val">0.1% (Фиксирован в коде)</span>
+                <span class="table-val">0.05% (Зафиксирован навсегда)</span>
             </div>
             <div class="table-row">
                 <span class="table-key">Право допечатывания (Mint Authority)</span>
@@ -795,6 +797,14 @@
             <div class="table-row">
                 <span class="table-key">Право блокировки (Freeze Authority)</span>
                 <span class="table-val ok">Отключено (Null)</span>
+            </div>
+            <div class="table-row">
+                <span class="table-key">Право смены комиссии (Fee Config Authority)</span>
+                <span class="table-val ok">Отключено (Null)</span>
+            </div>
+            <div class="table-row">
+                <span class="table-key">Сбор комиссий (Withheld Authority)</span>
+                <span class="table-val ok">PDA смарт-контракта</span>
             </div>
             <div class="table-row">
                 <span class="table-key">Ликвидность (LP Status)</span>
@@ -807,7 +817,7 @@
     <section id="roadmap">
         <span class="section-eyebrow">Roadmap</span>
         <h2 class="section-title">Дорожная карта</h2>
-        <p class="section-subtitle">Этапы развития протокола AXIS в экосистеме Solana.</p>
+        <p class="section-subtitle">Этапы развития протокола AXIOM в экосистеме Solana.</p>
         <div class="roadmap-grid">
             <div class="roadmap-card">
                 <div class="roadmap-phase">Фаза 1</div>
@@ -815,7 +825,7 @@
                 <ul class="roadmap-list">
                     <li>Деплой Token-2022 и Anchor-программы</li>
                     <li>Создание пула Meteora DLMM</li>
-                    <li>Сжигание LP-токенов</li>
+                    <li>Блокировка LP-токенов</li>
                     <li>Запуск dApp-дашборда на GitHub Pages</li>
                 </ul>
             </div>
@@ -849,15 +859,15 @@
         <div class="faq-wrapper">
             <div class="faq-item">
                 <div class="faq-question">Что такое Token-2022 и как удерживается налог? <span>+</span></div>
-                <div class="faq-answer">Token-2022 — это обновленный стандарт токенов на Solana, поддерживающий нативные расширения (Transfer Fee). Налог 0.1% удерживается прямо протоколом сети при каждом переводе.</div>
+                <div class="faq-answer">Token-2022 — это обновленный стандарт токенов на Solana, поддерживающий нативные расширения (Transfer Fee). Налог 0.05% удерживается прямо протоколом сети при каждом переводе.</div>
             </div>
             <div class="faq-item">
-                <div class="faq-question">Как получить 10% Bounty за сбор налога? <span>+</span></div>
-                <div class="faq-answer">Подключите кошелек к этому сайту. Когда в Vault накопятся комиссии, кнопка «Собрать налог и сжечь» станет активной. Подтвердите транзакцию — 10% от суммы Vault мгновенно поступит на ваш кошелек.</div>
+                <div class="faq-question">Как получить 20% Bounty за сбор налога? <span>+</span></div>
+                <div class="faq-answer">Подключите кошелек к этому сайту. Когда в Vault накопятся комиссии, кнопка «Собрать налог и сжечь» станет активной. Подтвердите транзакцию — 20% от суммы Vault мгновенно поступит на ваш кошелек.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Может ли разработчик изменить налог или украсть средства? <span>+</span></div>
-                <div class="faq-answer">Нет. Права управления комиссией переведены на PDA смарт-контракта. Налог фиксирован на уровне 0.1%, а Mint и Freeze Authority полностью отключены.</div>
+                <div class="faq-answer">Нет. Права управления комиссией переведены на PDA смарт-контракта. Налог зафиксирован на уровне 0.05%, а Mint, Freeze и Fee Config Authority полностью отключены.</div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">Почему кнопка сбора иногда неактивна? <span>+</span></div>
@@ -867,7 +877,7 @@
     </section>
 
     <footer>
-        <div>© 2026 AXIS Protocol. Autonomous & Trustless.</div>
+        <div>© 2026 AXIOM Protocol. Autonomous & Trustless.</div>
         <div class="footer-links">
             <a href="https://solscan.io" target="_blank">Solscan</a>
             <a href="https://app.meteora.ag" target="_blank">Meteora DLMM</a>
@@ -880,7 +890,7 @@
     // WEB3 CONFIG
     const RPC_ENDPOINT = "https://api.mainnet-beta.solana.com"; 
     const PROGRAM_ID = new solanaWeb3.PublicKey("GearSimpleCrank11111111111111111111111111111");
-    const MINT_ADDRESS = new solanaWeb3.PublicKey("ВАШ_MINT_ADDRESS_AXIS");
+    const MINT_ADDRESS = new solanaWeb3.PublicKey("ВАШ_MINT_ADDRESS_AXIOM");
     const VAULT_TOKEN_ACCOUNT = new solanaWeb3.PublicKey("ВАШ_VAULT_TOKEN_ACCOUNT");
     const DEV_TREASURY = new solanaWeb3.PublicKey("ВАШ_DEV_TREASURY_PUBKEY");
 
@@ -909,9 +919,9 @@
             const balanceData = await connection.getTokenAccountBalance(VAULT_TOKEN_ACCOUNT);
             const total = balanceData.value.uiAmount || 0;
 
-            document.getElementById("vaultBalance").innerText = total.toLocaleString() + " $AXIS";
-            document.getElementById("bountyAmount").innerText = (total * 0.10).toLocaleString();
-            document.getElementById("burnAmount").innerText = (total * 0.60).toLocaleString();
+            document.getElementById("vaultBalance").innerText = total.toLocaleString() + " $AXIOM";
+            document.getElementById("bountyAmount").innerText = (total * 0.20).toLocaleString();
+            document.getElementById("burnAmount").innerText = (total * 0.70).toLocaleString();
 
             if (total > 0 && walletPubKey) {
                 document.getElementById("harvestBtn").disabled = false;
