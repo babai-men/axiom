@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="100%" height="100%">
+  <defs>
+    <!-- Цветовые градиенты токеномики AXIOM -->
+    <linearGradient id="axiom-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0D97A" />
+      <stop offset="100%" stop-color="#C9A227" />
+    </linearGradient>
+    
+    <linearGradient id="axiom-ember" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF7A59" />
+      <stop offset="100%" stop-color="#E2623D" />
+    </linearGradient>
+    
+    <linearGradient id="axiom-mint" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#82E6AB" />
+      <stop offset="100%" stop-color="#6FCF97" />
+    </linearGradient>
+
+    <!-- Тень и неоновое свечение -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Темная подложка -->
+  <circle cx="60" cy="60" r="56" fill="#101113" stroke="#24262B" stroke-width="2"/>
+  
+  <!-- Внешний маховик распределения (70% Burn / 20% Bounty / 10% Dev Vault) -->
+  <!-- Окружность r=46 (C ≈ 289px) -->
+  <g transform="rotate(-90 60 60)">
+    <!-- 70% Burn (Ember) = 202.32px -->
+    <circle cx="60" cy="60" r="46" fill="none" stroke="url(#axiom-ember)" stroke-width="5" 
+            stroke-dasharray="202.32 289" stroke-dashoffset="0" stroke-linecap="round"/>
+    
+    <!-- 20% Bounty (Mint) = 57.80px -->
+    <circle cx="60" cy="60" r="46" fill="none" stroke="url(#axiom-mint)" stroke-width="5" 
+            stroke-dasharray="57.80 289" stroke-dashoffset="-202.32" stroke-linecap="round"/>
+    
+    <!-- 10% Dev Treasury (Gold) = 28.90px -->
+    <circle cx="60" cy="60" r="46" fill="none" stroke="url(#axiom-gold)" stroke-width="5" 
+            stroke-dasharray="28.90 289" stroke-dashoffset="-260.12" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Центральная геометрия: Монограмма AXIOM (A / Delta) -->
+  <g filter="url(#glow)">
+    <!-- Внешний контур A-фрейма -->
+    <path d="M60 27 L83 81 H71 L60 55 L49 81 H37 Z" fill="url(#axiom-gold)" />
+    
+    <!-- Перемычка с эффектом сжигания -->
+    <path d="M43 63 H77 V68 H43 Z" fill="url(#axiom-ember)" />
+    
+    <!-- Внутренний дельта-вырез -->
+    <path d="M60 39 L68 57 H52 Z" fill="#101113" />
+  </g>
+</svg>
