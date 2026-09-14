@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="axiom-logo.svg" alt="AXIOM Protocol Logo" width="120" height="120">
+  <img src="axiom-logo.svg" alt="AXIOM Protocol Logo" width="128" height="128">
 </p>
 
 <h1 align="center">AXIOM Protocol ($AXIOM)</h1>
@@ -14,39 +14,74 @@
 
 <p align="center">
   <a href="https://solana.com"><img src="https://img.shields.io/badge/Solana-Token--2022-3772FF?style=for-the-badge&logo=solana" alt="Solana Token-2022"></a>
-  <a href="#-токеномика-и-механика"><img src="https://img.shields.io/badge/Transfer_Fee-0.05%25_Fixed-FF7A59?style=for-the-badge" alt="Transfer Fee"></a>
+  <a href="#-механика-протокола-и-архитектура"><img src="https://img.shields.io/badge/Transfer_Fee-0.05%25_Fixed-FF7A59?style=for-the-badge" alt="Transfer Fee"></a>
   <a href="https://www.anchor-lang.com"><img src="https://img.shields.io/badge/Anchor-v0.30+-C9A227?style=for-the-badge" alt="Anchor"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-82E6AB?style=for-the-badge" alt="License"></a>
 </p>
 
 ---
 
-## 📌 О проекте
+## 📌 Обзоp
 
-**AXIOM Protocol** — это полностью автономный DeFi-протокол нового поколения на блокчейне Solana, использующий расширение **Token-2022 Transfer Hook**. Протокол взимает фиксированную нативную комиссию 0.05% с каждой транзакции, создавая непрерывный дефляционный маховик сжигания и стимуляции публичных исполнителей (Crank Executors).
+**AXIOM Protocol** — это децентрализованный, полностью автономный DeFi-протокол на блокчейне Solana, построенный на стандарте **Token-2022**. Протокол использует встроенное расширение **Transfer Fee Extension** (0.05%) и передает права на изъятие комиссий под управление автономного смарт-контракта через **Program Derived Address (PDA)**.
 
----
-
-## 🎨 Графические ресурсы бренда (Brand Assets)
-
-В репозитории используются следующие варианты визуализации для поддержки браузеров, социалок и криптовалютных кошельков:
-
-| Файл | Формат | Превью | Назначение |
-| :--- | :--- | :---: | :--- |
-| `axiom-logo.svg` | Вектор (SVG) | <img src="axiom-logo.svg" width="48" height="48" alt="SVG Logo"> | Шапка сайта (Navbar), адаптивный векторный интерфейс, масштабируемые dApp-компоненты |
-| `axiom-logo.png` | Растр (PNG) | <img src="axiom-logo.png" width="48" height="48" alt="PNG Logo"> | Фавиконка браузера, иконка токена в Phantom / Solflare, CoinGecko, Telegram-боты |
-| `axiom-banner.svg` | Вектор (SVG) | *(см. баннер вверху)* | Карточка репозитория GitHub, OpenGraph preview, презентационные соцсети |
+Архитектура исключает «человеческий фактор» (Human Risk): команда проекта не имеет доступа к сбору или выводу средств. Любой участник сети (MEV-бот, трейдер или скрипт) может инициировать процедуру расщепления налога и получить мгновенное вознаграждение.
 
 ---
 
-## 💡 Токеномика и механика
+## ⚡ Механика протокола и архитектура
 
-Каждый перевод токенов $AXIOM удерживает фиксированную комиссию **0.05%**, которая собирается в нативном хранилище контракта. Автоматический вызов функции `harvest` (Crank) распределяет собранные средства по фиксированной пропорции:
+### 1. Начисление комиссии (0.05%)
+При совершении любой транзакции перевода $AXIOM программа Solana Token-2022 автоматически удерживает **0.05%** от суммы перевода. Комиссия задерживается непосредственно на токен-аккаунтах участников сети в виде удерживаемого баланса (`withheld_amount`).
+
+### 2. Децентрализованный авто-сбор (PDA Fee Authority)
+Права `withdraw_withheld_authority` навсегда закреплены за PDA смарт-контракта (`seeds = [b"fee_authority", mint_key]`). Это позволяет контракту подписывать транзакции изъятия налога без участия приватных ключей администратора.
+
+### 3. Автоматический распределительный маховик (Volume Flywheel)
+Любой пользователь или бот запускает публичную инструкцию `harvest_and_distribute`. В рамках **одной атомарной транзакции** происходят следующие шаги:
+
+1. **Изъятие (Withdraw):** Контракт извлекает накопленные комиссии со всех удержавших их аккаунтов на свой сейф (`contract_vault`).
+2. **🔥 Burn (70%):** Контракт выполняет Cross-Program Invocation (CPI) в программу Token-2022 и сжигает 70% собранных токенов, уменьшая общее предложение $AXIOM.
+3. **⚡ Public Bounty (20%):** Контракт автоматически переводит 20% от сбора на кошелек аккаунта, вызвавшего функцию (стимул для Crank-ботов).
+4. **🛡️ Dev Treasury (10%):** Контракт направляет 10% в резерв для покрытия расходов на инфраструктуру, RPC и Liquidity-бустинг.
+
+---
+
+## 🔄 Схема работы (Sequence Diagram)
 
 ```mermaid
-graph TD
-    A[Транзакция перевода $AXIOM] -->|Нативная комиссия 0.05%| B(Token-2022 Fee Vault)
-    B -->|Публичный вызов Crank| C{AXIOM Distribution Hook}
-    C -->|70%| D[🔥 Burn Account / Окончательное сжигание]
-    C -->|20%| E[⚡ Public Bounty / Награда вызвавшему Crank]
-    C -->|10%| F[🛡️ Dev Treasury / Развитие и инфраструктура]
+sequenceDiagram
+    autonumber
+    actor Crank as Public Crank Bot / Пользователь
+    participant Contract as AXIOM Program (Anchor PDA)
+    participant Token2022 as Solana Token-2022 Program
+    participant Accounts as User Token Accounts
+    participant Vault as Contract Vault
+    participant Treasury as Dev Treasury Account
+
+    Note over Accounts, Token2022: Удержание 0.05% при переводах
+    Crank->>Contract: Вызов инструкции harvest_and_distribute()
+    
+    rect rgb(25, 25, 35)
+        Note over Contract, Token2022: CPI с подписью PDA (fee_authority)
+        Contract->>Token2022: withdraw_withheld_tokens_from_accounts()
+        Token2022->>Vault: Перевод удержанных комиссий на сейф
+    end
+
+    rect rgb(35, 25, 25)
+        Note over Contract, Token2022: 🔥 CPI Burn (70%)
+        Contract->>Token2022: burn(70% from Vault)
+        Token2022-->>Vault: Токены уничтожены
+    end
+
+    rect rgb(25, 35, 25)
+        Note over Contract, Crank: ⚡ CPI Transfer (20%)
+        Contract->>Token2022: transfer(20% from Vault to Crank)
+        Token2022-->>Crank: Мгновенная выплата Bounty
+    end
+
+    rect rgb(25, 25, 45)
+        Note over Contract, Treasury: 🛡️ CPI Transfer (10%)
+        Contract->>Token2022: transfer(10% from Vault to Treasury)
+        Token2022-->>Treasury: Пополнение Dev-резерва
+    end
