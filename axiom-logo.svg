@@ -1,13 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
-    <!-- Solana Gradient -->
     <linearGradient id="solanaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#9945FF"/>
       <stop offset="50%" stop-color="#00F2FE"/>
       <stop offset="100%" stop-color="#14F195"/>
     </linearGradient>
-
-    <!-- Flame Gradient -->
     <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
       <stop offset="0%" stop-color="#9945FF"/>
       <stop offset="50%" stop-color="#00F2FE"/>
@@ -18,24 +15,29 @@
   <!-- Background -->
   <rect width="512" height="512" fill="#000000"/>
 
-  <!-- Small p bottom-left -->
-  <text x="80" y="420" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="url(#solanaGrad)">
-    p
-  </text>
+  <!-- Letter Q -->
+  <path d="M 256 130 
+           C 190 130, 140 180, 140 250 
+           C 140 320, 190 370, 256 370 
+           C 322 370, 372 320, 372 250 
+           C 372 180, 322 130, 256 130 Z
+           M 256 180 
+           C 300 180, 340 220, 340 250 
+           C 340 280, 300 320, 256 320 
+           C 212 320, 172 280, 172 250 
+           C 172 220, 212 180, 256 180 Z"
+        fill="none" stroke="url(#solanaGrad)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Big QT center -->
-  <text x="180" y="300" font-family="Arial, sans-serif" font-size="160" font-weight="bold" fill="url(#solanaGrad)">
-    QT
-  </text>
+  <!-- Tail of Q -->
+  <path d="M 320 320 L 370 370" stroke="url(#solanaGrad)" stroke-width="20" stroke-linecap="round"/>
 
   <!-- Flame inside Q -->
-  <path d="M 220 180 
-           C 210 200, 205 215, 205 230 
-           C 205 245, 215 255, 220 255 
-           C 230 255, 240 245, 240 230 
-           C 240 215, 230 200, 220 180 Z"
+  <path d="M 256 210 
+           C 246 230, 240 245, 240 260 
+           C 240 275, 250 285, 256 285 
+           C 266 285, 272 275, 272 260 
+           C 272 245, 262 230, 256 210 Z"
         fill="url(#flameGrad)">
-    <!-- Animation -->
     <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite" additive="sum"/>
     <animate attributeName="fill" values="#9945FF;#00F2FE;#FFFFFF;#9945FF" dur="3s" repeatCount="indefinite"/>
