@@ -1,33 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
-    <!-- Background Radial Gradient -->
-    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#12132B"/>
-      <stop offset="70%" stop-color="#080914"/>
-      <stop offset="100%" stop-color="#030308"/>
-    </radialGradient>
-
-    <!-- Primary Brand Gradient (Solana Cyan to Deep Violet) -->
-    <linearGradient id="pqtGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00F2FE"/>
-      <stop offset="45%" stop-color="#4A00E0"/>
-      <stop offset="100%" stop-color="#8E2DE2"/>
+    <!-- Solana Brand Gradient -->
+    <linearGradient id="solanaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9945FF"/>
+      <stop offset="50%" stop-color="#00F2FE"/>
+      <stop offset="100%" stop-color="#14F195"/>
     </linearGradient>
 
-    <!-- Accent Gradient -->
-    <linearGradient id="accentGradient" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#00F2FE"/>
-      <stop offset="100%" stop-color="#FF007A"/>
-    </linearGradient>
-
-    <!-- Burn Flame Gradient -->
+    <!-- Flame Gradient -->
     <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#7000FF"/>
+      <stop offset="0%" stop-color="#9945FF"/>
       <stop offset="50%" stop-color="#00F2FE"/>
       <stop offset="100%" stop-color="#FFFFFF"/>
     </linearGradient>
 
-    <!-- Glow Filters -->
+    <!-- Glow Filter -->
     <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="6" result="blur"/>
       <feMerge>
@@ -35,72 +22,42 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-
-    <filter id="bgGlow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="25" result="blur"/>
-    </filter>
   </defs>
 
-  <!-- Token Base Background -->
-  <circle cx="256" cy="256" r="248" fill="url(#bgGrad)" stroke="url(#pqtGradient)" stroke-width="3"/>
+  <!-- Outer Ring -->
+  <circle cx="256" cy="256" r="225" fill="none" stroke="url(#solanaGrad)" stroke-width="4"/>
 
-  <!-- Ambient Glow Elements -->
-  <circle cx="256" cy="220" r="110" fill="#00F2FE" opacity="0.12" filter="url(#bgGlow)"/>
-  <circle cx="256" cy="280" r="100" fill="#7000FF" opacity="0.18" filter="url(#bgGlow)"/>
-
-  <!-- Quantitative Tightening Spiral Arcs -->
-  <g fill="none" stroke-linecap="round" opacity="0.35">
-    <path d="M 126 256 A 130 130 0 1 1 386 256" stroke="url(#pqtGradient)" stroke-width="2.5" stroke-dasharray="14 10 4 10"/>
-    <path d="M 148 256 A 108 108 0 1 1 364 256" stroke="#00F2FE" stroke-width="2" stroke-dasharray="8 8"/>
-    <path d="M 170 256 A 86 86 0 1 1 342 256" stroke="#8E2DE2" stroke-width="1.5" stroke-dasharray="12 6"/>
-  </g>
-
-  <!-- Main Symbol: Stylized Monogram P -->
+  <!-- Monogram P -->
   <g filter="url(#neonGlow)">
-    <!-- Outer Loop & Stem of 'P' -->
     <path d="M 180 380 
-             L 180 185 
-             C 180 135, 220 105, 275 105 
-             C 335 105, 375 145, 375 205 
-             C 375 265, 330 300, 275 300 
-             L 230 300 
-             L 230 380 Z" 
-          fill="none" 
-          stroke="url(#pqtGradient)" 
-          stroke-width="22" 
-          stroke-linecap="round" 
+             L 180 150 
+             C 180 120, 220 95, 270 95 
+             C 330 95, 370 135, 370 195 
+             C 370 255, 330 295, 270 295 
+             L 230 295 
+             L 230 380 Z"
+          fill="none"
+          stroke="url(#solanaGrad)"
+          stroke-width="28"
+          stroke-linecap="round"
           stroke-linejoin="round"/>
 
-    <!-- Inward Tightening Spiral Ribbon -->
-    <path d="M 275 250 
-             C 305 250, 325 230, 325 205 
-             C 325 175, 305 155, 275 155 
-             C 240 155, 225 180, 225 205 
-             C 225 225, 240 240, 256 240" 
-          fill="none" 
-          stroke="url(#accentGradient)" 
-          stroke-width="10" 
-          stroke-linecap="round"/>
-
-    <!-- Central Burn Flame Symbol (Animated) -->
-    <path d="M 275 178 
-             C 268 192, 258 202, 258 213 
-             C 258 222, 265 229, 275 229 
-             C 285 229, 292 222, 292 213 
-             C 292 202, 282 192, 275 178 Z" 
+    <!-- Flame inside P loop -->
+    <path d="M 275 160 
+             C 265 180, 260 195, 260 210 
+             C 260 225, 270 235, 275 235 
+             C 285 235, 295 225, 295 210 
+             C 295 195, 285 180, 275 160 Z"
           fill="url(#flameGrad)">
-      <!-- Opacity pulse -->
+      <!-- Animation for flame -->
       <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-      <!-- Breathing scale -->
       <animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite" additive="sum"/>
-      <!-- Color shift -->
-      <animate attributeName="fill" values="#7000FF;#00F2FE;#FFFFFF;#7000FF" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="fill" values="#9945FF;#00F2FE;#FFFFFF;#9945FF" dur="3s" repeatCount="indefinite"/>
     </path>
   </g>
 
-  <!-- Tech Accents & Data Nodes -->
-  <circle cx="180" cy="380" r="5" fill="#00F2FE"/>
-  <circle cx="375" cy="205" r="5" fill="#00F2FE"/>
-  <circle cx="275" cy="105" r="4" fill="#8E2DE2"/>
-  <circle cx="230" cy="380" r="4" fill="#8E2DE2"/>
+  <!-- QT Letters -->
+  <text x="290" y="390" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="url(#solanaGrad)">
+    QT
+  </text>
 </svg>
