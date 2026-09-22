@@ -1,4 +1,127 @@
-svg='''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c000ff"/><stop offset="50%" stop-color="#19b5ff"/><stop offset="100%" stop-color="#22ff44"/></linearGradient></defs><rect width="1024" height="1024" fill="black"/><circle cx="512" cy="512" r="445" fill="none" stroke="url(#g)" stroke-width="12"/><path d="M300 350 C180 350 140 430 140 520 C140 640 220 690 340 690 L390 740 L590 740 L500 650 C560 610 600 540 600 480 C600 395 535 350 420 350 Z M360 430 A90 90 0 1 1 359 430" fill="url(#g)" fill-rule="evenodd"/><path d="M520 355 L860 355 L820 435 L735 435 L735 680 L630 680 L630 435 L560 435 Z" fill="url(#g)"/><path d="M110 640 L110 750 L150 750 L150 710 C230 720 240 610 165 600 L110 600 Z M150 635 C185 635 185 685 150 685 Z" fill="url(#g)"/><path d="M395 585 C380 545 410 505 392 470 C430 492 438 437 421 407 C470 445 494 494 479 544 C500 532 509 502 506 472 C556 533 543 607 475 618 C430 626 405 615 395 585 Z" fill="url(#g)"/><path d="M455 600 C435 575 446 545 455 520 C468 544 484 561 489 585 C494 611 476 628 455 628 C434 628 420 614 455 600 Z" fill="white"/></svg>'''
-path='/mnt/data/pqt_logo.svg'
-open(path,'w').write(svg)
-print(path)
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+
+    <defs>
+        <linearGradient id="neon" x1="0%" y1="20%" x2="100%" y2="80%">
+            <stop offset="0%" stop-color="#c000ff"/>
+            <stop offset="50%" stop-color="#16b8ff"/>
+            <stop offset="100%" stop-color="#20ff44"/>
+        </linearGradient>
+
+        <linearGradient id="flame" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#cf00ff"/>
+            <stop offset="50%" stop-color="#0da7ff"/>
+            <stop offset="100%" stop-color="#00ff88"/>
+        </linearGradient>
+    </defs>
+
+    <!-- фон -->
+    <rect width="1024" height="1024" fill="#000"/>
+
+    <!-- внешний круг -->
+    <circle
+        cx="512"
+        cy="512"
+        r="445"
+        fill="none"
+        stroke="url(#neon)"
+        stroke-width="12"/>
+
+    <!-- буква p -->
+    <path
+        fill="url(#neon)"
+        d="
+        M110 625
+        L110 750
+        L150 750
+        L150 703
+        Q170 715 190 709
+        Q235 698 235 650
+        Q235 600 190 590
+        Q165 585 150 598
+        L150 590
+        L110 590
+        Z
+
+        M150 625
+        Q150 655 175 655
+        Q195 655 195 632
+        Q195 610 175 610
+        Q150 610 150 625
+        Z"/>
+
+    <!-- буква Q -->
+    <path
+        fill="url(#neon)"
+        fill-rule="evenodd"
+        d="
+        M375 340
+        C225 340 140 430 140 545
+        C140 660 225 745 342 745
+        L385 745
+        L594 796
+        L503 693
+        C578 643 620 571 620 483
+        C620 402 565 340 375 340
+        Z
+
+        M375 430
+        C460 430 505 475 505 545
+        C505 614 460 655 375 655
+        C290 655 245 614 245 545
+        C245 475 290 430 375 430
+        Z"/>
+
+    <!-- T -->
+    <path
+        fill="url(#neon)"
+        d="
+        M515 350
+        L860 350
+        L820 430
+        L735 430
+        L735 690
+        L630 690
+        L630 430
+        L560 430
+        Z"/>
+
+    <!-- хвост Q -->
+    <path
+        fill="url(#neon)"
+        d="
+        M445 603
+        L590 748
+        L520 770
+        L400 645
+        Z"/>
+
+    <!-- внешнее пламя -->
+    <path
+        fill="url(#flame)"
+        d="
+        M372 574
+        C348 532 360 500 377 466
+        C392 489 406 467 416 435
+        C429 395 418 374 394 348
+        C450 375 479 436 474 486
+        C486 465 493 442 494 408
+        C542 455 553 523 522 565
+        C501 593 476 606 442 606
+        C414 606 389 595 372 574
+        Z"/>
+
+    <!-- внутреннее белое пламя -->
+    <path
+        fill="#ffffff"
+        d="
+        M448 574
+        C436 554 441 531 454 503
+        C463 525 476 542 488 562
+        C496 576 497 589 491 602
+        C483 619 466 628 448 628
+        C430 628 415 618 409 602
+        C404 589 410 574 424 555
+        C432 571 439 576 448 574
+        Z"/>
+
+</svg>
