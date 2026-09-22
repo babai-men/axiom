@@ -1,1003 +1,442 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PQT Protocol | Programmatic Quantitative Tightening</title>
-    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="pqt-logo.svg">
-    <style>
-        :root {
-            /* Base surfaces */
-            --bg-color: #08090b;
-            --panel-bg: #101113;
-            --card-bg: #17181c;
-            --border-color: #24262b;
-            --border-soft: #1b1c20;
-
-            /* Text */
-            --text-main: #f2f1ee;
-            --text-muted: #8c8d93;
-            --text-faint: #5c5d63;
-
-            /* Flywheel accents */
-            --accent-gold: #c9a227;   /* treasury (10%) */
-            --accent-gold-hover: #e0b933;
-            --accent-ember: #e2623d;  /* burn (70%) */
-            --accent-mint: #6fcf97;   /* crank bounty (20%) */
-
-            --font-display: 'Space Grotesk', -apple-system, sans-serif;
-            --font-body: 'Inter', -apple-system, sans-serif;
-            --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-body);
-            scroll-behavior: smooth;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-        }
-
-        html { background: var(--bg-color); }
-
-        body {
-            background-color: var(--bg-color);
-            background-image:
-                radial-gradient(ellipse 900px 500px at 50% -10%, rgba(111, 207, 151, 0.08), transparent 60%),
-                radial-gradient(ellipse 700px 500px at 90% 20%, rgba(226, 98, 61, 0.05), transparent 60%);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1080px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        ::selection { background: var(--accent-mint); color: #08090b; }
-
-        /* NAVBAR */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 22px 0;
-            border-bottom: 1px solid var(--border-soft);
-            position: sticky;
-            top: 0;
-            background: rgba(8, 9, 11, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 100;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: var(--font-display);
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-main);
-            letter-spacing: 0.5px;
-        }
-
-        .logo img {
-            width: 36px;
-            height: 36px;
-            display: block;
-        }
-
-        /* BANNER */
-        .banner-wrap {
-            margin-top: 28px;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        .banner-wrap img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        @media (max-width: 640px) {
-            .banner-wrap { display: none; }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 28px;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.2px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover { color: var(--text-main); }
-
-        .btn-connect {
-            font-family: var(--font-mono);
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 12px;
-            letter-spacing: 0.3px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-connect:hover {
-            border-color: var(--accent-mint);
-            color: var(--accent-mint);
-        }
-
-        /* HERO */
-        .hero {
-            padding: 80px 0 40px;
-            text-align: center;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--font-mono);
-            background: rgba(111, 207, 151, 0.08);
-            color: var(--accent-mint);
-            border: 1px solid rgba(111, 207, 151, 0.25);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            margin-bottom: 28px;
-        }
-
-        .badge::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-mint);
-            box-shadow: 0 0 8px var(--accent-mint);
-        }
-
-        .hero h1 {
-            font-family: var(--font-display);
-            font-size: 52px;
-            font-weight: 700;
-            letter-spacing: -1.5px;
-            line-height: 1.08;
-            margin-bottom: 22px;
-        }
-
-        .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(120deg, var(--accent-mint) 0%, #a8f0c6 50%, var(--accent-mint) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 17px;
-            color: var(--text-muted);
-            max-width: 640px;
-            margin: 0 auto 8px;
-        }
-
-        /* FLYWHEEL DIAGRAM */
-        .flywheel-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            margin: 44px 0 8px;
-        }
-
-        .flywheel {
-            position: relative;
-            width: 220px;
-            height: 220px;
-        }
-
-        .flywheel svg { width: 100%; height: 100%; }
-
-        .flywheel-ring {
-            animation: spin 40s linear infinite;
-            transform-origin: 110px 110px;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .flywheel-core {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flywheel-core .tax {
-            font-family: var(--font-display);
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .flywheel-core .tax-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-faint);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-top: 4px;
-        }
-
-        .flywheel-legend {
-            display: flex;
-            gap: 22px;
-            margin-top: 20px;
-            font-family: var(--font-mono);
-            font-size: 12px;
-        }
-
-        .flywheel-legend span {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-muted);
-        }
-
-        .flywheel-legend .sw {
-            width: 8px;
-            height: 8px;
-            border-radius: 2px;
-        }
-
-        /* DASHBOARD WIDGET */
-        .widget-wrapper {
-            max-width: 480px;
-            margin: 56px auto 100px;
-            background: linear-gradient(180deg, var(--panel-bg), #0c0d0f);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 26px;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.03);
-        }
-
-        .widget-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .widget-header .label {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-faint);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .widget-header .live {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--accent-mint);
-        }
-
-        .widget-header .live .pulse {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent-mint);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            border-radius: 12px;
-            padding: 16px;
-            text-align: left;
-        }
-
-        .stat-card.full { grid-column: span 2; border-color: rgba(111, 207, 151, 0.2); }
-
-        .stat-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            text-transform: uppercase;
-            color: var(--text-faint);
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .stat-value { font-family: var(--font-mono); font-size: 18px; font-weight: 600; }
-        .stat-value.gold { color: var(--accent-gold); }
-        .stat-value.mint { color: var(--accent-mint); }
-        .stat-value.ember { color: var(--accent-ember); }
-
-        .btn-harvest {
-            width: 100%;
-            background: var(--accent-mint);
-            border: none;
-            color: #08090b;
-            padding: 17px;
-            border-radius: 10px;
-            font-family: var(--font-display);
-            font-size: 14px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-harvest:hover:not(:disabled) {
-            background: #81e2a9;
-            box-shadow: 0 0 24px rgba(111, 207, 151, 0.35);
-        }
-
-        .btn-harvest:disabled {
-            background: #1c1d21;
-            color: var(--text-faint);
-            cursor: not-allowed;
-        }
-
-        .status {
-            margin-top: 14px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-faint);
-            text-align: center;
-        }
-
-        /* SECTIONS */
-        section { padding: 64px 0; border-top: 1px solid var(--border-soft); }
-
-        .section-eyebrow {
-            display: block;
-            text-align: center;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--accent-mint);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-
-        .section-title {
-            text-align: center;
-            font-family: var(--font-display);
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 14px;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 48px;
-            font-size: 15px;
-        }
-
-        /* MECHANISM CARDS */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .feature-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-top: 2px solid var(--card-accent, var(--accent-mint));
-            border-radius: 14px;
-            padding: 26px;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .feature-card:hover { transform: translateY(-3px); }
-
-        .feature-card.ember { --card-accent: var(--accent-ember); }
-        .feature-card.mint { --card-accent: var(--accent-mint); }
-        .feature-card.gold { --card-accent: var(--accent-gold); }
-
-        .feature-percent {
-            font-family: var(--font-display);
-            font-size: 34px;
-            font-weight: 700;
-            color: var(--card-accent, var(--accent-mint));
-            margin-bottom: 10px;
-        }
-
-        .feature-title { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
-        .feature-desc { font-size: 14px; color: var(--text-muted); }
-
-        /* STEPS */
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            background: var(--border-soft);
-            border: 1px solid var(--border-soft);
-            border-radius: 14px;
-            overflow: hidden;
-        }
-
-        .step-card {
-            background: var(--panel-bg);
-            padding: 24px 22px;
-        }
-
-        .step-num {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent-mint);
-            letter-spacing: 1px;
-            margin-bottom: 14px;
-        }
-
-        .step-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
-        .step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
-
-        /* TOKENOMICS TABLE */
-        .tokenomics-table {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 8px 32px;
-        }
-
-        .table-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border-soft);
-        }
-
-        .table-row:last-child { border-bottom: none; }
-        .table-key { color: var(--text-muted); font-size: 14px; }
-        .table-val { font-family: var(--font-mono); font-weight: 500; font-size: 14px; }
-        .table-val.ok { color: var(--accent-mint); }
-
-        /* ROADMAP */
-        .roadmap-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .roadmap-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 26px;
-        }
-
-        .roadmap-phase {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent-mint);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .roadmap-title { font-size: 17px; font-weight: 600; margin-bottom: 16px; }
-
-        .roadmap-list {
-            list-style: none;
-            color: var(--text-muted);
-            font-size: 13.5px;
-        }
-
-        .roadmap-list li {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        .roadmap-list li::before {
-            content: "";
-            width: 5px;
-            height: 5px;
-            margin-top: 7px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: var(--accent-mint);
-        }
-
-        /* FAQ */
-        .faq-wrapper { max-width: 720px; margin: 0 auto; }
-
-        .faq-item {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 19px 22px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: color 0.2s;
-        }
-
-        .faq-question span {
-            font-family: var(--font-mono);
-            color: var(--text-faint);
-            transition: transform 0.2s ease;
-        }
-
-        .faq-answer {
-            padding: 0 22px 20px;
-            color: var(--text-muted);
-            font-size: 14px;
-            line-height: 1.6;
-            display: none;
-        }
-
-        .faq-item.active .faq-answer { display: block; }
-        .faq-item.active .faq-question { color: var(--accent-mint); }
-        .faq-item.active .faq-question span { transform: rotate(45deg); color: var(--accent-mint); }
-
-        /* FOOTER */
-        footer {
-            padding: 36px 0;
-            border-top: 1px solid var(--border-soft);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-faint);
-            font-family: var(--font-mono);
-            font-size: 12px;
-        }
-
-        .footer-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 22px;
-            transition: color 0.2s;
-        }
-
-        .footer-links a:hover { color: var(--accent-mint); }
-
-        @media (max-width: 900px) {
-            .cards-grid, .roadmap-grid { grid-template-columns: 1fr; }
-            .steps-grid { grid-template-columns: 1fr 1fr; }
-            .hero h1 { font-size: 36px; }
-            .nav-links { display: none; }
-            footer { flex-direction: column; gap: 14px; text-align: center; }
-            .footer-links a:first-child { margin-left: 0; }
-        }
-
-        @media (max-width: 520px) {
-            .steps-grid { grid-template-columns: 1fr; }
-            .tokenomics-table { padding: 8px 20px; }
-            .table-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pQT Protocol — Programmatic Quantitative Tightening</title>
+  <style>
+    /* Reset & CSS Variables matching pqt-logo.png */
+    :root {
+      --bg-dark: #050608;
+      --bg-card: #0d0f14;
+      --bg-card-hover: #141720;
+      --border-color: #1e2230;
+      --border-hover: rgba(0, 210, 255, 0.4);
+
+      --color-purple: #8b5cf6;
+      --color-cyan: #00d2ff;
+      --color-mint: #00ff87;
+
+      --grad-logo: linear-gradient(135deg, #8b5cf6 0%, #00d2ff 50%, #00ff87 100%);
+      --grad-text: linear-gradient(110deg, #9b51e0 0%, #00d2ff 45%, #00ff87 100%);
+      --grad-glow: radial-gradient(circle at 50% 10%, rgba(0, 210, 255, 0.12) 0%, rgba(139, 92, 246, 0.06) 45%, transparent 75%);
+
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+
+      --max-width: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      background-image: var(--grad-glow);
+      background-repeat: no-repeat;
+      min-height: 100vh;
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Navigation */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Neon Ring Avatar using pqt-logo.png */
+    .logo-ring {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      padding: 2px;
+      background: var(--grad-logo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
+    }
+
+    .logo-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--bg-dark);
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-tag {
+      font-size: 13px;
+      color: var(--color-mint);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--grad-logo);
+      color: #050608;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 135, 0.25);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+      box-shadow: 0 0 25px rgba(0, 210, 255, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 15px;
+      border: 1px solid var(--border-color);
+      padding: 12px 24px;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--color-cyan);
+    }
+
+    .gradient-text {
+      background: var(--grad-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: var(--color-cyan);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 60px 0 40px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    /* SVG Banner Integration Section */
+    .banner-section {
+      margin: 20px 0 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .banner-img {
+      width: 100%;
+      height: auto;
+      max-width: 1200px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .banner-img:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 210, 255, 0.25);
+    }
+
+    /* Specifications Grid */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 60px;
+    }
+
+    .spec-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .spec-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Tokenomics Cards */
+    .tokenomics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      box-shadow: 0 0 30px rgba(0, 210, 255, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .card-value {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .card-value.purple { color: var(--color-purple); }
+    .card-value.cyan   { color: var(--color-cyan); }
+    .card-value.mint   { color: var(--color-mint); }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .code-inline {
+      font-family: monospace;
+      color: var(--color-cyan);
+      background: rgba(0, 210, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 36px; }
+      .header { flex-direction: column; gap: 20px; }
+      .nav-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <nav>
-        <div class="logo">
-            <img src="pqt-logo.svg" alt="PQT Protocol Logo">
-            $pQT
-        </div>
-        <ul class="nav-links">
-            <li><a href="#dashboard">Дашборд</a></li>
-            <li><a href="#mechanism">Механика</a></li>
-            <li><a href="#steps">Принцип работы</a></li>
-            <li><a href="#tokenomics">Токеномика</a></li>
-            <li><a href="#roadmap">Roadmap</a></li>
-            <li><a href="#faq">FAQ</a></li>
-        </ul>
-        <button id="connectBtn" class="btn-connect" onclick="connectWallet()">Connect Wallet</button>
-    </nav>
-
-    <!-- BANNER -->
-    <div class="banner-wrap">
-        <img src="pqt-banner.svg" alt="PQT Protocol — Programmatic Quantitative Tightening, Solana Token-2022">
+  <!-- Header Navigation -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo-ring">
+        <!-- Logo Image -->
+        <img src="pqt-logo.png" alt="pQT Protocol Logo">
+      </div>
+      <div>
+        <span class="brand-title">pQT Protocol</span>
+        <span class="brand-tag">$pQT</span>
+      </div>
     </div>
 
-    <!-- HERO -->
-    <section class="hero" style="border-top: none;">
-        <div class="badge">Solana Token-2022 Standard</div>
-        <h1>Программное <em>количественное</em><br>ужесточение</h1>
-        <p>PQT Protocol ($pQT) — децентрализованный протокол алгоритмического сжатия денежной массы. Каждая транзакция удерживает комиссию 0.05%, вызывая непрерывное сжигание и выплату 20% Crank Bounty за сбор.</p>
+    <nav class="nav-links">
+      <a href="#about" class="nav-link">Overview</a>
+      <a href="#banner" class="nav-link">Banner</a>
+      <a href="#specs" class="nav-link">Specifications</a>
+      <a href="#tokenomics" class="nav-link">Tokenomics</a>
+      <button class="btn-primary">Connect Wallet</button>
+    </nav>
+  </header>
 
-        <!-- FLYWHEEL DIAGRAM (70% Burn / 20% Bounty / 10% Treasury) -->
-        <div class="flywheel-section">
-            <div class="flywheel">
-                <svg viewBox="0 0 220 220">
-                    <circle cx="110" cy="110" r="98" fill="none" stroke="#1b1c20" stroke-width="14"/>
-                    <g class="flywheel-ring">
-                        <!-- 70% Burn (431.1 / 615.8) -->
-                        <circle cx="110" cy="110" r="98" fill="none" stroke="#e2623d" stroke-width="14"
-                                stroke-dasharray="431.1 615.8" stroke-dashoffset="0" stroke-linecap="round"/>
-                        <!-- 20% Bounty (123.2 / 615.8) -->
-                        <circle cx="110" cy="110" r="98" fill="none" stroke="#6fcf97" stroke-width="14"
-                                stroke-dasharray="123.2 615.8" stroke-dashoffset="-431.1" stroke-linecap="round"/>
-                        <!-- 10% Treasury (61.6 / 615.8) -->
-                        <circle cx="110" cy="110" r="98" fill="none" stroke="#c9a227" stroke-width="14"
-                                stroke-dasharray="61.6 615.8" stroke-dashoffset="-554.3" stroke-linecap="round"/>
-                    </g>
-                </svg>
-                <div class="flywheel-core">
-                    <div class="tax">0.05%</div>
-                    <div class="tax-label">Transfer Fee</div>
-                </div>
-            </div>
-            <div class="flywheel-legend">
-                <span><i class="sw" style="background:var(--accent-ember)"></i>Burn 70%</span>
-                <span><i class="sw" style="background:var(--accent-mint)"></i>Bounty 20%</span>
-                <span><i class="sw" style="background:var(--accent-gold)"></i>Treasury 10%</span>
-            </div>
-        </div>
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero" id="about">
+      <div class="badge">
+        <span>🔥</span> Programmatic Quantitative Tightening
+      </div>
+      <h1 class="hero-title">
+        Autonomous Liquidity Contraction <br>
+        <span class="gradient-text">Powered by Solana Token-2022</span>
+      </h1>
+      <p class="hero-subtitle">
+        A decentralized deflationary protocol featuring an automated 70% burn rate on withheld transfer fees, instant Crank Bounty rewards, and zero token inflation.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary">Execute Harvest</button>
+        <a href="#tokenomics" class="btn-secondary">Explore Tokenomics</a>
+      </div>
     </section>
 
-    <!-- DASHBOARD -->
-    <section id="dashboard" style="border-top: none; padding-top: 0;">
-        <div class="widget-wrapper">
-            <div class="widget-header">
-                <span class="label">Vault Status</span>
-                <span class="live"><i class="pulse"></i>LIVE</span>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card full">
-                    <div class="stat-label">Накоплено комиссии к сбору (Vault)</div>
-                    <div id="vaultBalance" class="stat-value mint">0.00 $pQT</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Твой Bounty (20%)</div>
-                    <div id="bountyAmount" class="stat-value mint">0.00</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Сгорает (70%)</div>
-                    <div id="burnAmount" class="stat-value ember">0.00</div>
-                </div>
-                <div class="stat-card full">
-                    <div class="stat-label">Инфраструктурный фонд / Treasury (10%)</div>
-                    <div id="treasuryAmount" class="stat-value gold">0.00</div>
-                </div>
-            </div>
-
-            <button id="harvestBtn" class="btn-harvest" onclick="executeHarvest()" disabled>Собрать комиссию и сжечь</button>
-            <div id="statusMessage" class="status">Подключите кошелек</div>
-        </div>
+    <!-- New SVG Banner Showcase -->
+    <section class="banner-section" id="banner">
+      <img src="pqt-banner.svg" alt="pQT Protocol Tokenomics Banner" class="banner-img">
     </section>
 
-    <!-- MECHANISM SPLIT -->
-    <section id="mechanism">
-        <span class="section-eyebrow">Распределение</span>
-        <h2 class="section-title">Куда уходит комиссия 0.05%</h2>
-        <p class="section-subtitle">Расширение Transfer Fee (Token-2022) автоматически удерживает 5 bps при переводах, а метод harvest_and_distribute() распределяет комиссии без человеческого фактора.</p>
-        <div class="cards-grid">
-            <div class="feature-card ember">
-                <div class="feature-percent">70%</div>
-                <div class="feature-title">Программное сжигание (Burn)</div>
-                <div class="feature-desc">Токены навсегда уничтожаются через Cross-Program Invocation (token_2022::burn), гарантированно снижая Max Supply.</div>
-            </div>
-            <div class="feature-card mint">
-                <div class="feature-percent">20%</div>
-                <div class="feature-title">Crank Bounty</div>
-                <div class="feature-desc">Мгновенная выплата пользователю или MEV-боту, запустившему исполнение функции распределения.</div>
-            </div>
-            <div class="feature-card gold">
-                <div class="feature-percent">10%</div>
-                <div class="feature-title">Treasury Vault</div>
-                <div class="feature-desc">Автоматически направляется на казначейский кошелек для покрытия расходов на RPC, индексаторы и dApp.</div>
-            </div>
-        </div>
+    <!-- Protocol Specifications -->
+    <section class="specs-grid" id="specs">
+      <div class="spec-card">
+        <div class="spec-label">Transfer Fee</div>
+        <div class="spec-value" style="color: var(--color-mint);">0.05% (5 bps)</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-label">Mint Authority</div>
+        <div class="spec-value">REVOKED</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-label">Freeze Authority</div>
+        <div class="spec-value">REVOKED</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-label">Token Standard</div>
+        <div class="spec-value" style="color: var(--color-cyan);">Token-2022</div>
+      </div>
     </section>
 
-    <!-- HOW IT WORKS -->
-    <section id="steps">
-        <span class="section-eyebrow">Архитектура</span>
-        <h2 class="section-title">Как работает протокол</h2>
-        <p class="section-subtitle">Полностью автономный цикл монетарного сжатия на смарт-контракте Anchor.</p>
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-num">01 · Transfer</div>
-                <div class="step-title">Транзакции</div>
-                <div class="step-desc">При каждой транзакции $pQT в пулах Meteora DLMM или между кошельками удерживается комиссия 0.05%.</div>
-            </div>
-            <div class="step-card">
-                <div class="step-num">02 · Accumulate</div>
-                <div class="step-title">Накопление</div>
-                <div class="step-desc">Комиссионные средства накапливаются на специальных счетах удержания Token-2022.</div>
-            </div>
-            <div class="step-card">
-                <div class="step-num">03 · Crank</div>
-                <div class="step-title">Вызов Harvest</div>
-                <div class="step-desc">Любой пользователь или бот вызывает инструкцию harvest_and_distribute().</div>
-            </div>
-            <div class="step-card">
-                <div class="step-num">04 · Distribute</div>
-                <div class="step-title">Сжатие & Награда</div>
-                <div class="step-desc">Контракт сжигает 70%, отправляет 10% в Treasury, а вы моментально получаете 20% Crank Bounty.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TOKENOMICS -->
+    <!-- Tokenomics Section -->
     <section id="tokenomics">
-        <span class="section-eyebrow">Токеномика</span>
-        <h2 class="section-title">Спецификация Token-2022</h2>
-        <p class="section-subtitle">Нулевая инфляция и абсолютная цензуроустойчивость.</p>
-        <div class="tokenomics-table">
-            <div class="table-row">
-                <span class="table-key">Название и Тикер</span>
-                <span class="table-val">PQT Protocol ($pQT)</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">Блокчейн & Стандарт</span>
-                <span class="table-val">Solana (Token-2022)</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">Комиссия перевода (Transfer Fee)</span>
-                <span class="table-val">0.05% (5 bps)</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">Право эмиссии (Mint Authority)</span>
-                <span class="table-val ok">Revoked (Отзваны / Null)</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">Право заморозки (Freeze Authority)</span>
-                <span class="table-val ok">Revoked (Отзваны / Null)</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">Управление комиссией (Fee Authority)</span>
-                <span class="table-val ok">Program PDA [b"fee_authority", mint]</span>
-            </div>
-            <div class="table-row">
-                <span class="table-key">DEX Ликвидность</span>
-                <span class="table-val">Meteora DLMM</span>
-            </div>
+      <h2 style="font-size: 28px; font-weight: 800; margin-bottom: 32px; text-align: center;">
+        Fee Distribution Architecture
+      </h2>
+
+      <div class="tokenomics-grid">
+        <!-- 70% Auto-Burn -->
+        <div class="card">
+          <div class="card-value purple">70%</div>
+          <h3 class="card-title">🔥 Programmed Burn</h3>
+          <p class="card-desc">
+            The majority of withheld transfer fees are permanently destroyed on-chain via the <code class="code-inline">token_2022::burn</code> instruction, driving continuous supply contraction.
+          </p>
         </div>
+
+        <!-- 20% Crank Bounty -->
+        <div class="card">
+          <div class="card-value cyan">20%</div>
+          <h3 class="card-title">⚡ Crank Bounty</h3>
+          <p class="card-desc">
+            An instant financial reward paid out directly to any wallet or keeper bot that triggers the public fee harvesting instruction.
+          </p>
+        </div>
+
+        <!-- 10% Treasury -->
+        <div class="card">
+          <div class="card-value mint">10%</div>
+          <h3 class="card-title">🛡️ Treasury Vault</h3>
+          <p class="card-desc">
+            Allocated directly to a PDA-controlled treasury account to fund RPC infrastructure, custom indexers, and continuous dApp developments.
+          </p>
+        </div>
+      </div>
     </section>
+  </main>
 
-    <!-- ROADMAP -->
-    <section id="roadmap">
-        <span class="section-eyebrow">Roadmap</span>
-        <h2 class="section-title">Дорожная карта PQT</h2>
-        <p class="section-subtitle">Этапы развертывания и развития автономного монетарного сжатия.</p>
-        <div class="roadmap-grid">
-            <div class="roadmap-card">
-                <div class="roadmap-phase">Фаза 1</div>
-                <div class="roadmap-title">Devnet & Ядро</div>
-                <ul class="roadmap-list">
-                    <li>Разработка смарт-контракта Anchor</li>
-                    <li>Инициализация токена PQT (Token-2022)</li>
-                    <li>Настройка PDA Authority и Transfer Fee</li>
-                    <li>Запуск интерфейса управления Crank</li>
-                </ul>
-            </div>
-            <div class="roadmap-card">
-                <div class="roadmap-phase">Фаза 2</div>
-                <div class="roadmap-title">Mainnet & DEX</div>
-                <ul class="roadmap-list">
-                    <li>Деплой контракта в Mainnet-Beta</li>
-                    <li>Создание пула Meteora DLMM</li>
-                    <li>Отзыв Mint & Freeze Authority</li>
-                    <li>Подключение сторонних MEV-ботов</li>
-                </ul>
-            </div>
-            <div class="roadmap-card">
-                <div class="roadmap-phase">Фаза 3</div>
-                <div class="roadmap-title">Экосистема</div>
-                <ul class="roadmap-list">
-                    <li>Запуск трекера монетарного сжатия</li>
-                    <li>Индексатор параметров Burn / Supply</li>
-                    <li>Интеграция с ключевыми DeFi-агрегаторами</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section id="faq">
-        <span class="section-eyebrow">FAQ</span>
-        <h2 class="section-title">Часто задаваемые вопросы</h2>
-        <p class="section-subtitle">Всё о механике сжатия и получении Crank Bounty.</p>
-        <div class="faq-wrapper">
-            <div class="faq-item">
-                <div class="faq-question">Что такое PQT (Programmatic Quantitative Tightening)? <span>+</span></div>
-                <div class="faq-answer">Это концепция количественного ужесточения из макроэкономики, перенесенная в Solana. При каждом переводе токены $pQT алгоритмически изымаются и сжигаются, вызывая постоянное сокращение предложения.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Как получить 20% Crank Bounty? <span>+</span></div>
-                <div class="faq-answer">Подключите кошелек к dApp. Когда в Vault накапливаются комиссии, кнопка «Собрать комиссию и сжечь» становится активной. Отправьте транзакцию: 20% от выведенного пула мгновенно поступит на ваш кошелек.</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Может ли команда изменить размер комиссии или забрать токены? <span>+</span></div>
-                <div class="faq-answer">Нет. Права управления комиссией (Fee Authority) переданы на PDA смарт-контракта. Права допечатывания (Mint) и блокировки (Freeze) полностью отзваны (Revoked).</div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Какой размер комиссии установлен в протоколе? <span>+</span></div>
-                <div class="faq-answer">Фиксированный размер комиссии составляет 0.05% (5 basis points) от суммы перевода.</div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div>© 2026 PQT Protocol. Autonomous Quantitative Tightening.</div>
-        <div class="footer-links">
-            <a href="https://explorer.solana.com/?cluster=devnet" target="_blank">Solana Explorer (Devnet)</a>
-            <a href="https://app.meteora.ag" target="_blank">Meteora DLMM</a>
-        </div>
-    </footer>
-</div>
-
-<script>
-    // WEB3 CONFIG
-    const RPC_ENDPOINT = "https://api.devnet.solana.com"; 
-    const PROGRAM_ID = new solanaWeb3.PublicKey("PQT1111111111111111111111111111111111111111"); // Замените на публичный ключ вашего деплоя
-    const MINT_ADDRESS = new solanaWeb3.PublicKey("ВАШ_DEVNET_MINT_ADDRESS_PQT");
-    const PROTOCOL_VAULT = new solanaWeb3.PublicKey("ВАШ_PROTOCOL_VAULT_TOKEN_ACCOUNT");
-    const TREASURY_VAULT = new solanaWeb3.PublicKey("ВАШ_TREASURY_VAULT_TOKEN_ACCOUNT");
-    const TOKEN_2022_PROGRAM_ID = new solanaWeb3.PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
-
-    const connection = new solanaWeb3.Connection(RPC_ENDPOINT, "confirmed");
-    let walletPubKey = null;
-
-    // Расчет 8-байтового Anchor-дискриминатора для метода "harvest_and_distribute"
-    async function getAnchorDiscriminator(methodName) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(`global:${methodName}`);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        return new Uint8Array(hashBuffer.slice(0, 8));
-    }
-
-    // Поиск PDA Fee Authority
-    function getFeeAuthorityPda(mint) {
-        return solanaWeb3.PublicKey.findProgramAddressSync(
-            [Buffer.from("fee_authority"), mint.toBuffer()],
-            PROGRAM_ID
-        )[0];
-    }
-
-    async function connectWallet() {
-        if ("solana" in window) {
-            try {
-                const response = await window.solana.connect();
-                walletPubKey = response.publicKey;
-                const base58 = walletPubKey.toBase58();
-                document.getElementById("connectBtn").innerText = base58.slice(0, 4) + "..." + base58.slice(-4);
-                document.getElementById("statusMessage").innerText = "Кошелек подключен";
-                fetchVaultBalance();
-            } catch (err) {
-                document.getElementById("statusMessage").innerText = "Ошибка: " + err.message;
-            }
-        } else {
-            alert("Кошелек Solana не найден (Phantom / Solflare).");
-        }
-    }
-
-    async function fetchVaultBalance() {
-        try {
-            const balanceData = await connection.getTokenAccountBalance(PROTOCOL_VAULT);
-            const total = balanceData.value.uiAmount || 0;
-
-            document.getElementById("vaultBalance").innerText = total.toLocaleString(undefined, {maximumFractionDigits: 4}) + " $pQT";
-            document.getElementById("bountyAmount").innerText = (total * 0.20).toLocaleString(undefined, {maximumFractionDigits: 4});
-            document.getElementById("burnAmount").innerText = (total * 0.70).toLocaleString(undefined, {maximumFractionDigits: 4});
-            document.getElementById("treasuryAmount").innerText = (total * 0.10).toLocaleString(undefined, {maximumFractionDigits: 4});
-
-            if (total > 0 && walletPubKey) {
-                document.getElementById("harvestBtn").disabled = false;
-            } else {
-                document.getElementById("harvestBtn").disabled = true;
-            }
-        } catch (err) {
-            document.getElementById("statusMessage").innerText = "Ожидание инициализации Vault";
-        }
-    }
-
-    async function executeHarvest() {
-        if (!walletPubKey) return;
-
-        document.getElementById("harvestBtn").disabled = true;
-        document.getElementById("statusMessage").innerText = "Подтвердите транзакцию в кошельке...";
-
-        try {
-            const instructionDiscriminator = await getAnchorDiscriminator("harvest_and_distribute");
-            const feeAuthorityPda = getFeeAuthorityPda(MINT_ADDRESS);
-
-            // Порядок аккаунтов строго соответствует Anchor структуре HarvestAndDistribute
-            const keys = [
-                { pubkey: MINT_ADDRESS, isSigner: false, isWritable: true },
-                { pubkey: feeAuthorityPda, isSigner: false, isWritable: false },
-                { pubkey: PROTOCOL_VAULT, isSigner: false, isWritable: true },
-                { pubkey: walletPubKey, isSigner: false, isWritable: true }, // crank_recipient (токен аккаунт вызова)
-                { pubkey: TREASURY_VAULT, isSigner: false, isWritable: true },
-                { pubkey: TOKEN_2022_PROGRAM_ID, isSigner: false, isWritable: false }
-            ];
-
-            const ix = new solanaWeb3.TransactionInstruction({
-                keys,
-                programId: PROGRAM_ID,
-                data: instructionDiscriminator,
-            });
-
-            const tx = new solanaWeb3.Transaction().add(ix);
-            tx.feePayer = walletPubKey;
-            tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-
-            const signedTx = await window.solana.signAndSendTransaction(tx);
-            document.getElementById("statusMessage").innerText = "Успешно! Tx: " + signedTx.signature.slice(0, 8) + "...";
-            
-            setTimeout(fetchVaultBalance, 3000);
-        } catch (err) {
-            document.getElementById("statusMessage").innerText = "Ошибка: " + err.message;
-            document.getElementById("harvestBtn").disabled = false;
-        }
-    }
-
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(item => {
-        item.addEventListener('click', () => {
-            const parent = item.parentNode;
-            parent.classList.toggle('active');
-        });
-    });
-
-    setInterval(fetchVaultBalance, 8000);
-</script>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 pQT Protocol. All rights reserved. Built on Solana Token-2022.</p>
+  </footer>
 
 </body>
 </html>
