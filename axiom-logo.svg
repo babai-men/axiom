@@ -1,45 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <defs>
-    <linearGradient id="solanaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#9945FF"/>
-      <stop offset="50%" stop-color="#00F2FE"/>
-      <stop offset="100%" stop-color="#14F195"/>
-    </linearGradient>
-    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#9945FF"/>
-      <stop offset="50%" stop-color="#00F2FE"/>
-      <stop offset="100%" stop-color="#FFFFFF"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Background -->
-  <rect width="512" height="512" fill="#000000"/>
-
-  <!-- Letter Q -->
-  <path d="M 256 130 
-           C 190 130, 140 180, 140 250 
-           C 140 320, 190 370, 256 370 
-           C 322 370, 372 320, 372 250 
-           C 372 180, 322 130, 256 130 Z
-           M 256 180 
-           C 300 180, 340 220, 340 250 
-           C 340 280, 300 320, 256 320 
-           C 212 320, 172 280, 172 250 
-           C 172 220, 212 180, 256 180 Z"
-        fill="none" stroke="url(#solanaGrad)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Tail of Q -->
-  <path d="M 320 320 L 370 370" stroke="url(#solanaGrad)" stroke-width="20" stroke-linecap="round"/>
-
-  <!-- Flame inside Q -->
-  <path d="M 256 210 
-           C 246 230, 240 245, 240 260 
-           C 240 275, 250 285, 256 285 
-           C 266 285, 272 275, 272 260 
-           C 272 245, 262 230, 256 210 Z"
-        fill="url(#flameGrad)">
-    <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" attributeType="XML" type="scale" values="1;1.1;1" dur="2s" repeatCount="indefinite" additive="sum"/>
-    <animate attributeName="fill" values="#9945FF;#00F2FE;#FFFFFF;#9945FF" dur="3s" repeatCount="indefinite"/>
-  </path>
-</svg>
+svg='''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#c000ff"/><stop offset="50%" stop-color="#19b5ff"/><stop offset="100%" stop-color="#22ff44"/></linearGradient></defs><rect width="1024" height="1024" fill="black"/><circle cx="512" cy="512" r="445" fill="none" stroke="url(#g)" stroke-width="12"/><path d="M300 350 C180 350 140 430 140 520 C140 640 220 690 340 690 L390 740 L590 740 L500 650 C560 610 600 540 600 480 C600 395 535 350 420 350 Z M360 430 A90 90 0 1 1 359 430" fill="url(#g)" fill-rule="evenodd"/><path d="M520 355 L860 355 L820 435 L735 435 L735 680 L630 680 L630 435 L560 435 Z" fill="url(#g)"/><path d="M110 640 L110 750 L150 750 L150 710 C230 720 240 610 165 600 L110 600 Z M150 635 C185 635 185 685 150 685 Z" fill="url(#g)"/><path d="M395 585 C380 545 410 505 392 470 C430 492 438 437 421 407 C470 445 494 494 479 544 C500 532 509 502 506 472 C556 533 543 607 475 618 C430 626 405 615 395 585 Z" fill="url(#g)"/><path d="M455 600 C435 575 446 545 455 520 C468 544 484 561 489 585 C494 611 476 628 455 628 C434 628 420 614 455 600 Z" fill="white"/></svg>'''
+path='/mnt/data/pqt_logo.svg'
+open(path,'w').write(svg)
+print(path)
