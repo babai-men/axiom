@@ -69,7 +69,7 @@
       font-size: 16px;
       color: var(--text-muted);
       text-align: center;
-      max-width: 680px;
+      max-width: 720px;
       margin: 0 auto 48px;
     }
 
@@ -131,7 +131,7 @@
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 22px;
     }
 
     .nav-link {
@@ -265,7 +265,7 @@
       flex-wrap: wrap;
     }
 
-    /* SVG Banner Integration */
+    /* Vector Banner Showcase */
     .banner-section {
       margin: 10px 0 60px;
       display: flex;
@@ -314,6 +314,83 @@
       font-size: 22px;
       font-weight: 800;
       color: var(--text-main);
+    }
+
+    /* NEW: About Project Detailed Section */
+    .about-section {
+      margin-bottom: 80px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--grad-logo);
+    }
+
+    .about-card-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .about-card-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .about-card-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .about-highlight-box {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(0, 210, 255, 0.08) 100%);
+      border: 1px solid rgba(0, 210, 255, 0.25);
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .about-highlight-content {
+      flex: 1;
+    }
+
+    .about-highlight-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--color-mint);
+    }
+
+    .about-highlight-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
     /* Smart Contract Console (Web3 Interactor) */
@@ -629,7 +706,7 @@
     @media (max-width: 768px) {
       .hero-title { font-size: 36px; }
       .header { flex-direction: column; gap: 16px; }
-      .nav-links { flex-wrap: wrap; justify-content: center; gap: 16px; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
     }
   </style>
 </head>
@@ -648,7 +725,7 @@
     </div>
 
     <nav class="nav-links">
-      <a href="#about" class="nav-link">Overview</a>
+      <a href="#about-project" class="nav-link">About Project</a>
       <a href="#console" class="nav-link">Smart Contract</a>
       <a href="#security" class="nav-link">Security Hub</a>
       <a href="#tokenomics" class="nav-link">Tokenomics</a>
@@ -666,7 +743,7 @@
 
   <main class="container">
     <!-- Hero Section -->
-    <section class="hero" id="about">
+    <section class="hero" id="overview">
       <div class="badge">
         <span>🔥</span> Programmatic Quantitative Tightening
       </div>
@@ -682,11 +759,11 @@
         <a href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 28px; font-size: 16px;">
           🛒 Buy $pQT on Jupiter
         </a>
-        <a href="#console" class="btn-primary" style="padding: 12px 24px; font-size: 15px;">
-          ⚡ Execute Contract
+        <a href="#about-project" class="btn-primary" style="padding: 12px 24px; font-size: 15px;">
+          📖 About Project
         </a>
         <a href="#security" class="btn-secondary" style="padding: 12px 24px; font-size: 15px;">
-          🛡️ Audit & Safety
+          🛡️ Audit &amp; Safety
         </a>
       </div>
     </section>
@@ -717,6 +794,56 @@
       <div class="stat-card">
         <div class="stat-label">Mint Authority</div>
         <div class="stat-value" style="color: var(--color-mint);">REVOKED</div>
+      </div>
+    </section>
+
+    <!-- NEW SECTION: Detailed About Project -->
+    <section id="about-project" class="about-section">
+      <h2 class="section-title">About pQT Protocol</h2>
+      <p class="section-subtitle">
+        pQT (Programmatic Quantitative Tightening) introduces an autonomous, decentralized monetary policy designed to continuously shrink circulating supply through native smart contract extensions.
+      </p>
+
+      <div class="about-grid">
+        <!-- Pillar 1 -->
+        <div class="about-card">
+          <div class="about-card-icon">📉</div>
+          <h3 class="about-card-title">The Inflation Problem</h3>
+          <p class="about-card-text">
+            Traditional Web3 tokens suffer from predatory emission schedules, unlocked team allocations, and passive dilution. Without programmatic burn sinks, token velocity creates persistent downward pressure on liquid markets.
+          </p>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="about-card">
+          <div class="about-card-icon">⚡</div>
+          <h3 class="about-card-title">The Token-2022 Solution</h3>
+          <p class="about-card-text">
+            Leveraging Solana's next-generation Token-2022 Transfer Fee extension, $pQT transparently withholds 0.05% of every transaction on-chain. Fees are automatically queued inside individual token accounts without requiring central custodians.
+          </p>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="about-card">
+          <div class="about-card-icon">🤖</div>
+          <h3 class="about-card-title">Permissionless Execution</h3>
+          <p class="about-card-text">
+            Harvesting is entirely decentralized. By offering an instant 20% Crank Bounty on all harvested tokens, keeper bots and community members compete to execute harvest instructions, guaranteeing continuous supply destruction.
+          </p>
+        </div>
+      </div>
+
+      <!-- Protocol Feature Highlight Box -->
+      <div class="about-highlight-box">
+        <div class="about-highlight-content">
+          <h3 class="about-highlight-title">Built for Immutable Trust &amp; Pure Deflation</h3>
+          <p class="about-highlight-desc">
+            $pQT operates with zero admin controls. Both Mint Authority and Freeze Authority have been permanently set to <code class="code-inline">None</code>. The treasury account is governed by a Program Derived Address (PDA), ensuring that protocol parameters can never be altered or compromised.
+          </p>
+        </div>
+        <a href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 24px; white-space: nowrap;">
+          🛒 Trade $pQT Now
+        </a>
       </div>
     </section>
 
