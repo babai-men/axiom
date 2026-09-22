@@ -6,390 +6,536 @@
 
 <title>PQT Protocol | Programmatic Quantitative Tightening</title>
 
-https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.jsscript>
-
 https://fonts.googleapis.com
-https://fonts.gstatic.com
+<link relonts.gstatic.com
 
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600p
+
+<script src="https://unpkg.com/@solana/web3.jsndex.iife.min.jsscript>
 
 <style>
 
 :root{
-    --bg:#070809;
-    --card:#111317;
-    --card2:#191c20;
 
-    --border:#23262b;
+--bg:#060708;
+--panel:#111318;
+--card:#171920;
 
-    --text:#f5f5f5;
-    --muted:#8f939b;
+--border:#23262b;
 
-    --burn:#ff6a47;
-    --crank:#55d38b;
-    --treasury:#d4ae36;
+--text:#f5f5f5;
+--muted:#93a0b0;
 
-    --font-display:'Space Grotesk',sans-serif;
-    --font-body:'Inter',sans-serif;
-    --font-mono:'IBM Plex Mono',monospace;
+--burn:#ff6b47;
+--reward:#56d98b;
+--gold:#d6b441;
+
+--display:'Space Grotesk',sans-serif;
+--body:'Inter',sans-serif;
+--mono:'IBM Plex Mono',monospace;
 }
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:var(--font-body);
 
-    background-image:
-    radial-gradient(circle at top,
-    rgba(212,174,54,.12),
-    transparent 35%);
+font-family:var(--body);
+
+background:
+radial-gradient(circle at top,
+rgba(214,180,65,.1),
+transparent 40%),
+
+radial-gradient(circle at right,
+rgba(255,107,71,.05),
+transparent 35%),
+
+var(--bg);
+
+color:var(--text);
 }
 
 .container{
-    max-width:1200px;
-    margin:auto;
-    padding:0 20px;
+max-width:1200px;
+margin:auto;
+padding:0 24px;
 }
 
-nav{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+/* NAV */
 
-    padding:24px 0;
+nav{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:24px 0;
+
+border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 .logo{
-    display:flex;
-    align-items:center;
-    gap:12px;
 
-    font-family:var(--font-display);
-    font-weight:700;
-    font-size:22px;
+font-family:var(--display);
+font-size:24px;
+font-weight:800;
+
+letter-spacing:-1px;
 }
 
-.logo img{
-    width:40px;
+.logo span{
+color:var(--gold);
+}
+
+.nav-links{
+
+display:flex;
+gap:32px;
+}
+
+.nav-links a{
+
+text-decoration:none;
+color:var(--muted);
+
+font-size:14px;
+}
+
+.nav-links a:hover{
+color:white;
 }
 
 .btn{
-    background:transparent;
 
-    border:1px solid var(--border);
+border:1px solid var(--border);
 
-    color:white;
+background:transparent;
 
-    padding:12px 18px;
+color:white;
 
-    border-radius:10px;
+padding:12px 18px;
 
-    cursor:pointer;
+border-radius:12px;
+
+cursor:pointer;
 }
 
 .btn:hover{
-    border-color:var(--treasury);
+
+border-color:var(--gold);
+
+color:var(--gold);
 }
 
 /* HERO */
 
 .hero{
-    padding:70px 0 70px;
-    text-align:center;
+
+padding:100px 0;
+text-align:center;
 }
 
 .badge{
-    display:inline-block;
 
-    padding:8px 16px;
+display:inline-block;
 
-    border-radius:50px;
+padding:8px 18px;
 
-    border:1px solid rgba(212,174,54,.25);
+border-radius:40px;
 
-    color:var(--treasury);
+border:1px solid rgba(214,180,65,.25);
 
-    font-size:12px;
+background:rgba(214,180,65,.08);
 
-    font-family:var(--font-mono);
+color:var(--gold);
 
-    margin-bottom:30px;
+font-size:12px;
+
+font-family:var(--mono);
+
+margin-bottom:32px;
 }
 
 .hero h1{
-    font-family:var(--font-display);
 
-    font-size:72px;
+font-family:var(--display);
 
-    line-height:0.95;
+font-size:76px;
 
-    margin-bottom:25px;
+line-height:0.95;
+
+margin-bottom:30px;
 }
 
 .hero h1 span{
-    color:var(--treasury);
+
+background:linear-gradient(
+90deg,
+#ffffff,
+#d6b441
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
 .hero p{
-    max-width:800px;
 
-    margin:auto;
+max-width:850px;
 
-    color:var(--muted);
+margin:auto;
 
-    font-size:20px;
+font-size:20px;
 
-    line-height:1.7;
+line-height:1.8;
+
+color:var(--muted);
 }
 
-.metrics{
-    display:grid;
+/* QT WHEEL */
 
-    grid-template-columns:
-    repeat(4,1fr);
+.qt-wrapper{
 
-    gap:20px;
+margin-top:70px;
 
-    margin-top:70px;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
-.metric{
-    background:var(--card);
+.qt-circle{
 
-    border:1px solid var(--border);
+width:280px;
+height:280px;
 
-    border-radius:18px;
+border-radius:50%;
 
-    padding:25px;
+background:
+conic-gradient(
+var(--burn) 0% 70%,
+var(--reward) 70% 90%,
+var(--gold) 90% 100%
+);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+animation:spin 40s linear infinite;
 }
 
-.metric-label{
-    font-size:12px;
+.qt-inner{
 
-    color:var(--muted);
+width:200px;
+height:200px;
 
-    text-transform:uppercase;
+border-radius:50%;
 
-    margin-bottom:10px;
-}
+background:var(--bg);
 
-.metric-value{
-    font-size:26px;
+display:flex;
 
-    font-weight:700;
-}
+flex-direction:column;
 
-/* QT CIRCLE */
-
-.qt{
-    margin-top:80px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-}
-
-.circle{
-    width:260px;
-    height:260px;
-
-    border-radius:50%;
-
-    background:
-    conic-gradient(
-    var(--burn) 0% 70%,
-    var(--crank) 70% 90%,
-    var(--treasury) 90% 100%
-    );
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    animation:spin 35s linear infinite;
-}
-
-.inner{
-    width:190px;
-    height:190px;
-
-    background:var(--bg);
-
-    border-radius:50%;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
+justify-content:center;
+align-items:center;
 }
 
 .tax{
-    font-size:42px;
 
-    font-weight:800;
+font-family:var(--display);
 
-    font-family:var(--font-display);
+font-size:48px;
+font-weight:800;
 }
 
 .tax-label{
-    color:var(--muted);
 
-    font-size:12px;
+font-family:var(--mono);
 
-    font-family:var(--font-mono);
+font-size:11px;
+
+color:var(--muted);
+
+margin-top:6px;
 }
 
 @keyframes spin{
-    from{
-        transform:rotate(0);
-    }
 
-    to{
-        transform:rotate(360deg);
-    }
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
 }
 
 .legend{
-    display:flex;
 
-    gap:25px;
+display:flex;
 
-    margin-top:25px;
+gap:24px;
 
-    flex-wrap:wrap;
+margin-top:30px;
 
-    justify-content:center;
+flex-wrap:wrap;
+
+justify-content:center;
 }
 
 .legend-item{
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
+display:flex;
+align-items:center;
+gap:8px;
 }
 
 .dot{
-    width:10px;
-    height:10px;
 
-    border-radius:50%;
+width:10px;
+height:10px;
+
+border-radius:50%;
+}
+
+/* DASHBOARD */
+
+.metrics{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:18px;
+
+margin-top:70px;
+}
+
+.metric{
+
+background:var(--panel);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:24px;
+}
+
+.metric-title{
+
+font-family:var(--mono);
+
+font-size:11px;
+
+color:var(--muted);
+
+margin-bottom:14px;
+}
+
+.metric-value{
+
+font-size:26px;
+
+font-weight:700;
 }
 
 /* SECTIONS */
 
 .section{
-    padding:100px 0;
+padding:100px 0;
 }
 
-.section h2{
-    text-align:center;
+.section-title{
 
-    font-size:42px;
+text-align:center;
 
-    margin-bottom:20px;
+font-size:44px;
 
-    font-family:var(--font-display);
+font-family:var(--display);
+
+margin-bottom:20px;
 }
 
-.section p{
-    text-align:center;
+.section-sub{
 
-    max-width:800px;
+text-align:center;
 
-    margin:auto;
+max-width:850px;
 
-    color:var(--muted);
+margin:auto;
 
-    line-height:1.8;
+line-height:1.8;
+
+color:var(--muted);
 }
 
 .cards{
-    display:grid;
 
-    grid-template-columns:
-    repeat(3,1fr);
+display:grid;
 
-    gap:20px;
+grid-template-columns:
+repeat(3,1fr);
 
-    margin-top:60px;
+gap:24px;
+
+margin-top:60px;
 }
 
 .card{
-    background:var(--card);
 
-    border:1px solid var(--border);
+background:var(--panel);
 
-    border-radius:20px;
+border:1px solid var(--border);
 
-    padding:30px;
+border-radius:18px;
+
+padding:30px;
 }
 
 .percent{
-    font-size:48px;
 
-    font-weight:800;
+font-size:50px;
 
-    margin-bottom:15px;
+font-weight:800;
+
+margin-bottom:14px;
 }
 
 .burn{
-    color:var(--burn);
+color:var(--burn);
 }
 
-.crank{
-    color:var(--crank);
+.reward{
+color:var(--reward);
 }
 
 .treasury{
-    color:var(--treasury);
+color:var(--gold);
 }
 
 .card h3{
-    margin-bottom:10px;
+
+margin-bottom:12px;
 }
 
 .card p{
-    text-align:left;
+
+color:var(--muted);
+
+line-height:1.7;
 }
 
-@media(max-width:900px){
+/* HOW */
 
-.hero h1{
-    font-size:48px;
+.steps{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:20px;
+
+margin-top:50px;
 }
+
+.step{
+
+background:var(--panel);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:24px;
+}
+
+.step-number{
+
+color:var(--gold);
+
+font-family:var(--mono);
+
+font-size:12px;
+
+margin-bottom:14px;
+}
+
+.step h4{
+
+margin-bottom:10px;
+}
+
+.step p{
+
+color:var(--muted);
+
+line-height:1.6;
+}
+
+/* FOOTER */
+
+footer{
+
+padding:40px 0;
+
+text-align:center;
+
+border-top:1px solid rgba(255,255,255,.05);
+
+color:var(--muted);
+}
+
+@media(max-width:1000px){
 
 .metrics{
-    grid-template-columns:1fr 1fr;
+grid-template-columns:1fr 1fr;
 }
 
 .cards{
-    grid-template-columns:1fr;
+grid-template-columns:1fr;
 }
 
-}
-
-@media(max-width:600px){
-
-.metrics{
-    grid-template-columns:1fr;
+.steps{
+grid-template-columns:1fr 1fr;
 }
 
 .hero h1{
-    font-size:38px;
+font-size:54px;
+}
+
+}
+
+@media(max-width:700px){
+
+.metrics{
+grid-template-columns:1fr;
+}
+
+.steps{
+grid-template-columns:1fr;
+}
+
+.nav-links{
+display:none;
+}
+
+.hero h1{
+font-size:42px;
+}
+
+.hero p{
+font-size:18px;
 }
 
 }
@@ -404,11 +550,17 @@ nav{
 <nav>
 
 <div class="logo">
-<img src="pqt-logo.svg">
-PQT Protocol
+<span>PQT</span> Protocol
 </div>
 
-<button onclick="connectWallet()" class="btn">
+<div class="nav-links">
+#protocolProtocol</a>
+#tokenomicsTokenomics</a>
+#howMechanism</a>
+#devnetDevnet</a>
+</div>
+
+<button class="btn" onclick="connectWallet()">
 Connect Wallet
 </button>
 
@@ -417,29 +569,34 @@ Connect Wallet
 <section class="hero">
 
 <div class="badge">
-AUTONOMOUS MONETARY CONTRACTION
+PROGRAMMATIC QUANTITATIVE TIGHTENING
 </div>
 
 <h1>
-Programmatic<br>
-<span>Quantitative Tightening</span>
+On‑Chain<br>
+<span>Monetary Contraction</span>
 </h1>
 
 <p>
-PQT Protocol brings the concept of Quantitative Tightening
-to Solana. Every transfer automatically contributes to
-supply reduction through Token-2022 transfer fees and
-on-chain monetary contraction.
+PQT Protocol applies the principles of Quantitative Tightening
+to Solana. Every transaction contributes to autonomous supply
+reduction through Token‑2022 fees, creating a transparent and
+permanent contraction mechanism fully enforced on‑chain.
 </p>
 
-<div class="qt">
+<div class="qt-wrapper">
 
-<div class="circle">
+<div class="qt-circle">
 
-<div class="inner">
+<div class="qt-inner">
 
-<div class="tax">0.05%</div>
-<div class="tax-label">TRANSFER FEE</div>
+<div class="tax">
+0.05%
+</div>
+
+<div class="tax-label">
+TRANSFER FEE
+</div>
 
 </div>
 
@@ -453,12 +610,12 @@ on-chain monetary contraction.
 </div>
 
 <div class="legend-item">
-<div class="dot" style="background:var(--crank)"></div>
+<div class="dot" style="background:var(--reward)"></div>
 20% Crank Reward
 </div>
 
 <div class="legend-item">
-<div class="dot" style="background:var(--treasury)"></div>
+<div class="dot" style="background:var(--gold)"></div>
 10% Treasury
 </div>
 
@@ -469,46 +626,42 @@ on-chain monetary contraction.
 <div class="metrics">
 
 <div class="metric">
-<div class="metric-label">
-Current Supply
+<div class="metric-title">
+CURRENT SUPPLY
 </div>
 
-<div class="metric-value"
-id="supply">
----
-</div>
-</div>
-
-<div class="metric">
-<div class="metric-label">
-Total Burned
-</div>
-
-<div class="metric-value"
-id="burned">
----
+<div class="metric-value">
+10B
 </div>
 </div>
 
 <div class="metric">
-<div class="metric-label">
-Pending Fees
+<div class="metric-title">
+TOTAL BURNED
 </div>
 
-<div class="metric-value"
-id="fees">
----
+<div class="metric-value">
+0
 </div>
 </div>
 
 <div class="metric">
-<div class="metric-label">
-Last Distribution
+<div class="metric-title">
+PENDING FEES
 </div>
 
-<div class="metric-value"
-id="distribution">
----
+<div class="metric-value">
+0
+</div>
+</div>
+
+<div class="metric">
+<div class="metric-title">
+NETWORK
+</div>
+
+<div class="metric-value">
+DEVNET
 </div>
 </div>
 
@@ -516,29 +669,26 @@ id="distribution">
 
 </section>
 
-<section class="section">
+<section id="protocol" class="section">
 
-<h2>
-What Is Quantitative Tightening?
-</h2>
+<div class="section-title">
+What is Quantitative Tightening?
+</div>
 
-<p>
-Traditional central banks reduce liquidity through
-Quantitative Tightening.
-
-PQT applies the same principle on-chain through autonomous
-smart contract execution. Every transaction permanently
-reduces circulating supply and rewards the network
-participants who trigger distributions.
-</p>
+<div class="section-sub">
+Traditional central banks reduce liquidity through Quantitative Tightening.
+PQT brings this concept to DeFi. Every transaction contributes to a
+continuous supply contraction process enforced by smart contracts
+rather than human governance.
+</div>
 
 </section>
 
-<section class="section">
+<section id="tokenomics" class="section">
 
-<h2>
+<div class="section-title">
 Tokenomics
-</h2>
+</div>
 
 <div class="cards">
 
@@ -549,19 +699,19 @@ Tokenomics
 </div>
 
 <h3>
-Supply Reduction
+Programmatic Burn
 </h3>
 
 <p>
-Collected transfer fees are permanently burned
-through Token-2022 burn instructions.
+The majority of collected fees are permanently destroyed,
+continuously reducing circulating supply.
 </p>
 
 </div>
 
 <div class="card">
 
-<div class="percent crank">
+<div class="percent reward">
 20%
 </div>
 
@@ -570,8 +720,8 @@ Crank Incentive
 </h3>
 
 <p>
-Anyone can execute the harvest and distribution
-transaction and instantly receive a reward.
+Anyone can trigger distribution and instantly receive
+a reward for maintaining protocol activity.
 </p>
 
 </div>
@@ -583,12 +733,12 @@ transaction and instantly receive a reward.
 </div>
 
 <h3>
-Treasury
+Treasury Vault
 </h3>
 
 <p>
-Funds infrastructure, RPC services, indexers,
-development and ecosystem growth.
+Supports RPC costs, developers, monitoring infrastructure
+and ecosystem growth.
 </p>
 
 </div>
@@ -596,6 +746,107 @@ development and ecosystem growth.
 </div>
 
 </section>
+
+<section id="how" class="section">
+
+<div class="section-title">
+How It Works
+</div>
+
+<div class="steps">
+
+<div class="step">
+
+<div class="step-number">
+STEP 01
+</div>
+
+<h4>
+Transaction
+</h4>
+
+<p>
+User transfers pQT.
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+STEP 02
+</div>
+
+<h4>
+Fee Collection
+</h4>
+
+<p>
+Token‑2022 collects 0.05% fee automatically.
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+STEP 03
+</div>
+
+<h4>
+Harvest
+</h4>
+
+<p>
+Crank bot executes harvest_and_distribute().
+</p>
+
+</div>
+
+<div class="step">
+
+<div class="step-number">
+STEP 04
+</div>
+
+<h4>
+Distribution
+</h4>
+
+<p>
+70% Burn • 20% Reward • 10% Treasury.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section id="devnet" class="section">
+
+<div class="section-title">
+Devnet Launch
+</div>
+
+<div class="section-sub">
+
+Blockchain: Solana Devnet<br>
+Token Standard: Token‑2022<br>
+Transfer Fee: 0.05%<br>
+Mint Authority: Revoked<br>
+Freeze Authority: Revoked<br>
+Fee Authority: Program PDA
+
+</div>
+
+</section>
+
+<footer>
+
+PQT Protocol • Programmatic Quantitative Tightening • Solana Devnet
+
+</footer>
 
 </div>
 
@@ -610,32 +861,33 @@ RPC_ENDPOINT,
 "confirmed"
 );
 
-let wallet = null;
-
 async function connectWallet(){
 
-    if(!window.solana){
-        alert("Phantom wallet not installed");
-        return;
-    }
+if(!window.solana){
 
-    try{
+alert("Phantom Wallet not detected");
+return;
+}
 
-        const response =
-        await window.solana.connect();
+try{
 
-        wallet =
-        response.publicKey;
+const response =
+await window.solana.connect();
 
-        console.log(
-        wallet.toBase58()
-        );
+const address =
+response.publicKey.toBase58();
 
-    }catch(err){
+alert(
+"Connected: " +
+address
+);
 
-        console.error(err);
+}catch(error){
 
-    }
+console.error(error);
+
+}
+
 }
 
 </script>
