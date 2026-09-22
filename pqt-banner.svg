@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <defs>
+    <!-- Background Glow Effects -->
+    <radialGradient id="bgGlow1" cx="20%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#050608" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bgGlow2" cx="80%" cy="70%" r="60%">
+      <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#050608" stop-opacity="0"/>
+    </radialGradient>
+    
+    <!-- Gradients -->
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d0f14" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#050608" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#00d2ff" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#00ff87" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="50%" stop-color="#00d2ff"/>
+      <stop offset="100%" stop-color="#00ff87"/>
+    </linearGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Base Layers -->
+  <rect width="1200" height="500" fill="#050608"/>
+  <rect width="1200" height="500" fill="url(#grid)"/>
+  <rect width="1200" height="500" fill="url(#bgGlow1)"/>
+  <rect width="1200" height="500" fill="url(#bgGlow2)"/>
+
+  <!-- Outer Border -->
+  <rect x="15" y="15" width="1170" height="470" rx="20" fill="none" stroke="url(#borderGrad)" stroke-width="1.5"/>
+
+  <!-- LEFT SECTION: Brand & Specifications -->
+  <rect x="60" y="55" width="240" height="32" rx="16" fill="#8b5cf6" fill-opacity="0.1" stroke="#8b5cf6" stroke-opacity="0.4" stroke-width="1"/>
+  <circle cx="78" cy="71" r="4" fill="#00d2ff"/>
+  <text x="92" y="75" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" fill="#00d2ff" letter-spacing="1">SOLANA TOKEN-2022</text>
+
+  <!-- Main Title -->
+  <text x="60" y="145" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="52" font-weight="900" fill="#ffffff" letter-spacing="-1">PQT PROTOCOL <tspan fill="url(#textGrad)">$pQT</tspan></text>
+  <text x="60" y="180" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="600" fill="#9ca3af">Programmatic Quantitative Tightening</text>
+
+  <text x="60" y="215" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" fill="#6b7280">
+    Autonomous decentralized monetary contraction protocol.
+  </text>
+
+  <!-- Parameters Badge Group -->
+  <g transform="translate(60, 260)">
+    <!-- Fee Spec -->
+    <rect x="0" y="0" width="150" height="50" rx="10" fill="#0d0f14" stroke="#1e2230"/>
+    <text x="15" y="20" font-family="monospace" font-size="10" fill="#6b7280">TRANSFER FEE</text>
+    <text x="15" y="38" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#00ff87">0.05% (5 bps)</text>
+
+    <!-- Mint Spec -->
+    <rect x="162" y="0" width="150" height="50" rx="10" fill="#0d0f14" stroke="#1e2230"/>
+    <text x="177" y="20" font-family="monospace" font-size="10" fill="#6b7280">MINT AUTHORITY</text>
+    <text x="177" y="38" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff">REVOKED</text>
+
+    <!-- Freeze Spec -->
+    <rect x="324" y="0" width="150" height="50" rx="10" fill="#0d0f14" stroke="#1e2230"/>
+    <text x="339" y="20" font-family="monospace" font-size="10" fill="#6b7280">FREEZE AUTHORITY</text>
+    <text x="339" y="38" font-family="-apple-system, sans-serif" font-size="16" font-weight="700" fill="#ffffff">REVOKED</text>
+  </g>
+
+  <!-- Feature Checkmarks -->
+  <g transform="translate(60, 350)">
+    <text x="0" y="0" font-family="monospace" font-size="12" fill="#00ff87">✓ Zero Inflation</text>
+    <text x="140" y="0" font-family="monospace" font-size="12" fill="#00d2ff">✓ Meteora DLMM</text>
+    <text x="290" y="0" font-family="monospace" font-size="12" fill="#8b5cf6">✓ Program PDA Authority</text>
+  </g>
+
+  <!-- RIGHT SECTION: Tokenomics Card -->
+  <g transform="translate(670, 55)">
+    <rect x="0" y="0" width="470" height="380" rx="18" fill="url(#cardGrad)" stroke="#1e2230" stroke-width="1.5"/>
+
+    <text x="30" y="42" font-family="-apple-system, sans-serif" font-size="18" font-weight="800" fill="#ffffff">TOKENOMICS SPLIT</text>
+    <text x="30" y="62" font-family="monospace" font-size="11" fill="#6b7280">WITHHELD FEE DISTRIBUTION</text>
+
+    <!-- 70% BURN -->
+    <g transform="translate(30, 85)">
+      <rect x="0" y="0" width="410" height="75" rx="12" fill="#050608" stroke="#8b5cf6" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="20" y="48" font-family="-apple-system, sans-serif" font-size="32" font-weight="900" fill="#8b5cf6">70%</text>
+      <text x="110" y="32" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#ffffff">🔥 PROGRAMMED BURN</text>
+      <text x="110" y="52" font-family="-apple-system, sans-serif" font-size="12" fill="#9ca3af">Permanently burned via token_2022::burn</text>
+    </g>
+
+    <!-- 20% BOUNTY -->
+    <g transform="translate(30, 175)">
+      <rect x="0" y="0" width="410" height="75" rx="12" fill="#050608" stroke="#00d2ff" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="20" y="48" font-family="-apple-system, sans-serif" font-size="32" font-weight="900" fill="#00d2ff">20%</text>
+      <text x="110" y="32" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#ffffff">⚡ CRANK BOUNTY</text>
+      <text x="110" y="52" font-family="-apple-system, sans-serif" font-size="12" fill="#9ca3af">Instant payout to the Harvest transaction caller</text>
+    </g>
+
+    <!-- 10% TREASURY -->
+    <g transform="translate(30, 265)">
+      <rect x="0" y="0" width="410" height="75" rx="12" fill="#050608" stroke="#00ff87" stroke-opacity="0.5" stroke-width="1"/>
+      <text x="20" y="48" font-family="-apple-system, sans-serif" font-size="32" font-weight="900" fill="#00ff87">10%</text>
+      <text x="110" y="32" font-family="-apple-system, sans-serif" font-size="15" font-weight="700" fill="#ffffff">🛡️ TREASURY VAULT</text>
+      <text x="110" y="52" font-family="-apple-system, sans-serif" font-size="12" fill="#9ca3af">Infrastructure, RPC, indexers, and dApp core</text>
+    </g>
+  </g>
+
+  <!-- Bottom Accent Line -->
+  <rect x="60" y="450" width="1080" height="2" fill="url(#borderGrad)"/>
+</svg>
