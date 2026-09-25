@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pQT Protocol — Programmatic Quantitative Tightening</title>
-  
+
   <!-- Solana Web3 & Anchor Client Libraries -->
   <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@coral-xyz/anchor@0.30.1/dist/browser/anchor.umd.js"></script>
@@ -39,11 +39,7 @@
       --max-width: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-dark);
@@ -56,644 +52,178 @@
       scroll-behavior: smooth;
     }
 
-    .container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 20px;
-    }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 
-    .section-title {
-      font-size: 32px;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
-
-    .section-subtitle {
-      font-size: 16px;
-      color: var(--text-muted);
-      text-align: center;
-      max-width: 720px;
-      margin: 0 auto 48px;
-    }
+    .section-title { font-size: 32px; font-weight: 800; text-align: center; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .section-subtitle { font-size: 16px; color: var(--text-muted); text-align: center; max-width: 720px; margin: 0 auto 48px; }
 
     /* Header & Navigation */
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--max-width); margin: 0 auto; padding: 20px;
       border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      background: rgba(5, 6, 8, 0.85);
-      backdrop-filter: blur(12px);
-      z-index: 100;
+      position: sticky; top: 0; background: rgba(5, 6, 8, 0.85);
+      backdrop-filter: blur(12px); z-index: 100;
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
+    .brand { display: flex; align-items: center; gap: 14px; }
 
     .logo-ring {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      padding: 2px;
-      background: var(--grad-logo);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 44px; height: 44px; border-radius: 50%; padding: 2px;
+      background: var(--grad-logo); display: flex; align-items: center; justify-content: center;
       box-shadow: 0 0 12px rgba(0, 210, 255, 0.3);
     }
+    .logo-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg-dark); }
 
-    .logo-ring img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      background: var(--bg-dark);
-    }
+    .brand-title { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .brand-tag { font-size: 12px; color: var(--color-mint); font-weight: 600; margin-left: 4px; }
 
-    .brand-title {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-link { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s ease; }
+    .nav-link:hover { color: var(--text-main); }
 
-    .brand-tag {
-      font-size: 12px;
-      color: var(--color-mint);
-      font-weight: 600;
-      margin-left: 4px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-
-    .nav-link:hover {
-      color: var(--text-main);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-actions { display: flex; align-items: center; gap: 12px; }
 
     /* Buttons */
     .btn-buy {
       background: linear-gradient(135deg, #00ff87 0%, #00d2ff 100%);
-      color: #050608;
-      font-weight: 800;
-      font-size: 14px;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.25s ease;
+      color: #050608; font-weight: 800; font-size: 14px; border: none;
+      padding: 10px 20px; border-radius: 10px; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px; transition: all 0.25s ease;
       box-shadow: 0 0 15px rgba(0, 255, 135, 0.3);
     }
-
-    .btn-buy:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 25px rgba(0, 210, 255, 0.5);
-    }
+    .btn-buy:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 210, 255, 0.5); }
 
     .btn-primary {
-      background: var(--grad-logo);
-      color: #050608;
-      font-weight: 700;
-      font-size: 14px;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+      background: var(--grad-logo); color: #050608; font-weight: 700; font-size: 14px;
+      border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer;
+      transition: all 0.25s ease; box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
     }
-
-    .btn-primary:hover {
-      opacity: 0.95;
-      transform: translateY(-2px);
-    }
+    .btn-primary:hover { opacity: 0.95; transform: translateY(-2px); }
 
     .btn-secondary {
-      background: var(--bg-card);
-      color: var(--text-main);
-      font-weight: 600;
-      font-size: 14px;
-      border: 1px solid var(--border-color);
-      padding: 10px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      background: var(--bg-card); color: var(--text-main); font-weight: 600; font-size: 14px;
+      border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 10px;
+      cursor: pointer; text-decoration: none; transition: all 0.2s ease;
+      display: inline-flex; align-items: center; gap: 6px;
     }
+    .btn-secondary:hover { background: var(--bg-card-hover); border-color: var(--color-cyan); }
 
-    .btn-secondary:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--color-cyan);
-    }
-
-    .gradient-text {
-      background: var(--grad-text);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
-    }
+    .gradient-text { background: var(--grad-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      color: var(--color-cyan);
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 24px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: 20px;
+      background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3);
+      color: var(--color-cyan); font-size: 13px; font-weight: 600; margin-bottom: 24px;
     }
 
-    /* Hero Section */
-    .hero {
-      text-align: center;
-      padding: 60px 0 30px;
-    }
+    /* Hero */
+    .hero { text-align: center; padding: 60px 0 30px; }
+    .hero-title { font-size: 52px; font-weight: 900; line-height: 1.15; letter-spacing: -1px; margin-bottom: 20px; }
+    .hero-subtitle { font-size: 18px; color: var(--text-muted); max-width: 760px; margin: 0 auto 32px; }
+    .hero-actions { display: flex; justify-content: center; align-items: center; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
 
-    .hero-title {
-      font-size: 52px;
-      font-weight: 900;
-      line-height: 1.15;
-      letter-spacing: -1px;
-      margin-bottom: 20px;
-    }
-
-    .hero-subtitle {
-      font-size: 18px;
-      color: var(--text-muted);
-      max-width: 760px;
-      margin: 0 auto 32px;
-    }
-
-    .hero-actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    /* Banner Showcase */
-    .banner-section {
-      margin: 10px 0 60px;
-      display: flex;
-      justify-content: center;
-    }
-
+    .banner-section { margin: 10px 0 60px; display: flex; justify-content: center; }
     .banner-img {
-      width: 100%;
-      height: auto;
-      max-width: 1200px;
-      border-radius: 20px;
+      width: 100%; height: auto; max-width: 1200px; border-radius: 20px;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(139, 92, 246, 0.15);
       transition: transform 0.3s ease;
     }
+    .banner-img:hover { transform: translateY(-2px); }
 
-    .banner-img:hover {
-      transform: translateY(-2px);
-    }
+    /* Stats */
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 80px; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; text-align: left; }
+    .stat-label { font-size: 11px; font-family: monospace; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .stat-value { font-size: 22px; font-weight: 800; color: var(--text-main); }
 
-    /* Live Protocol Stats Bar */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 80px;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 20px;
-      text-align: left;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      font-family: monospace;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    /* About Section */
-    .about-section {
-      margin-bottom: 80px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-
-    .about-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 32px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .about-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--grad-logo);
-    }
-
-    .about-card-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-    }
-
-    .about-card-title {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      color: var(--text-main);
-    }
-
-    .about-card-text {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.7;
-    }
+    /* About */
+    .about-section { margin-bottom: 80px; }
+    .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .about-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; position: relative; overflow: hidden; }
+    .about-card::before { content: ""; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--grad-logo); }
+    .about-card-icon { font-size: 32px; margin-bottom: 16px; }
+    .about-card-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
+    .about-card-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
     .about-highlight-box {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(0, 210, 255, 0.08) 100%);
-      border: 1px solid rgba(0, 210, 255, 0.25);
-      border-radius: 16px;
-      padding: 32px;
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
+      border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 16px; padding: 32px;
+      display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
     }
+    .about-highlight-content { flex: 1; }
+    .about-highlight-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; color: var(--color-mint); }
+    .about-highlight-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
-    .about-highlight-content {
-      flex: 1;
-    }
-
-    .about-highlight-title {
-      font-size: 22px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      color: var(--color-mint);
-    }
-
-    .about-highlight-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* Smart Contract Console */
-    .console-container {
-      background: var(--bg-console);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 32px;
-      margin-bottom: 80px;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .console-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
+    /* Console */
+    .console-container { background: var(--bg-console); border: 1px solid var(--border-color); border-radius: 20px; padding: 32px; margin-bottom: 80px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); }
+    .console-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
     .contract-address-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      font-family: monospace;
-      font-size: 13px;
-      color: var(--color-cyan);
+      display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.03);
+      padding: 8px 14px; border-radius: 8px; border: 1px solid var(--border-color);
+      font-family: monospace; font-size: 13px; color: var(--color-cyan); flex-wrap: wrap;
     }
+    .console-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 900px) { .console-grid { grid-template-columns: 1fr; } }
 
-    .console-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 900px) {
-      .console-grid { grid-template-columns: 1fr; }
-    }
-
-    .console-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    .console-actions { display: flex; flex-direction: column; gap: 16px; }
 
     .action-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--text-main);
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px;
+      padding: 16px; text-align: left; cursor: pointer; transition: all 0.2s ease; color: var(--text-main);
     }
-
-    .action-btn:hover:not(:disabled) {
-      background: var(--bg-card-hover);
-      border-color: var(--color-cyan);
-      transform: translateX(4px);
-    }
-
-    .action-title {
-      font-weight: 700;
-      font-size: 15px;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .action-desc {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
+    .action-btn:hover:not(:disabled) { background: var(--bg-card-hover); border-color: var(--color-cyan); transform: translateX(4px); }
+    .action-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .action-desc { font-size: 12px; color: var(--text-muted); }
 
     .terminal-box {
-      background: #000000;
-      border: 1px solid #1a1d26;
-      border-radius: 12px;
-      padding: 16px;
-      font-family: monospace;
-      font-size: 12px;
-      color: var(--color-mint);
-      height: 280px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
+      background: #000000; border: 1px solid #1a1d26; border-radius: 12px; padding: 16px;
+      font-family: monospace; font-size: 12px; color: var(--color-mint); height: 280px;
+      overflow-y: auto; display: flex; flex-direction: column;
     }
+    .terminal-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #111; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ef4444; } .dot-yellow { background: #f59e0b; } .dot-green { background: #10b981; }
+    .log-line { margin-bottom: 6px; word-break: break-all; }
+    .log-info { color: #9ca3af; } .log-success { color: var(--color-mint); } .log-warn { color: var(--color-amber); }
 
-    .terminal-bar {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #111;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #f59e0b; }
-    .dot-green { background: #10b981; }
-
-    .log-line {
-      margin-bottom: 6px;
-      word-break: break-all;
-    }
-
-    .log-info { color: #9ca3af; }
-    .log-success { color: var(--color-mint); }
-    .log-warn { color: var(--color-amber); }
-
-    /* Security Hub */
-    .security-section {
-      margin-bottom: 80px;
-    }
-
-    .security-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
+    /* Security */
+    .security-section { margin-bottom: 80px; }
+    .security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
     .security-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 24px;
-      text-decoration: none;
-      color: var(--text-main);
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px;
+      text-decoration: none; color: var(--text-main); transition: all 0.3s ease;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-
-    .security-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--color-cyan);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(0, 210, 255, 0.15);
-    }
-
-    .security-icon {
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-
-    .security-name {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .security-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .security-badge {
-      font-size: 11px;
-      font-family: monospace;
-      color: var(--color-mint);
-      background: rgba(0, 255, 135, 0.08);
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-      width: fit-content;
-    }
+    .security-card:hover { background: var(--bg-card-hover); border-color: var(--color-cyan); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 210, 255, 0.15); }
+    .security-icon { font-size: 28px; margin-bottom: 12px; }
+    .security-name { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .security-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+    .security-badge { font-size: 11px; font-family: monospace; color: var(--color-mint); background: rgba(0, 255, 135, 0.08); padding: 4px 8px; border-radius: 6px; display: inline-block; width: fit-content; }
 
     /* Tokenomics */
-    .tokenomics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-bottom: 80px;
-    }
+    .tokenomics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 80px; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 32px; transition: all 0.3s ease; }
+    .card:hover { background: var(--bg-card-hover); border-color: var(--border-hover); box-shadow: 0 0 30px rgba(0, 210, 255, 0.12); transform: translateY(-3px); }
+    .card-value { font-size: 44px; font-weight: 900; line-height: 1; margin-bottom: 12px; }
+    .card-value.purple { color: var(--color-purple); } .card-value.cyan { color: var(--color-cyan); } .card-value.mint { color: var(--color-mint); }
+    .card-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+    .card-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+    .code-inline { font-family: monospace; color: var(--color-cyan); background: rgba(0, 210, 255, 0.08); padding: 2px 6px; border-radius: 4px; }
 
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 32px;
-      transition: all 0.3s ease;
-    }
-
-    .card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-hover);
-      box-shadow: 0 0 30px rgba(0, 210, 255, 0.12);
-      transform: translateY(-3px);
-    }
-
-    .card-value {
-      font-size: 44px;
-      font-weight: 900;
-      line-height: 1;
-      margin-bottom: 12px;
-    }
-
-    .card-value.purple { color: var(--color-purple); }
-    .card-value.cyan   { color: var(--color-cyan); }
-    .card-value.mint   { color: var(--color-mint); }
-
-    .card-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .card-desc {
-      color: var(--text-muted);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .code-inline {
-      font-family: monospace;
-      color: var(--color-cyan);
-      background: rgba(0, 210, 255, 0.08);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    /* FAQ Section */
-    .faq-section {
-      margin-bottom: 80px;
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-      gap: 20px;
-    }
-
-    @media (max-width: 600px) {
-      .faq-grid { grid-template-columns: 1fr; }
-    }
-
-    .faq-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 24px;
-    }
-
-    .faq-q {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--text-main);
-    }
-
-    .faq-a {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+    /* FAQ */
+    .faq-section { margin-bottom: 80px; }
+    .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+    @media (max-width: 600px) { .faq-grid { grid-template-columns: 1fr; } }
+    .faq-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 24px; }
+    .faq-q { font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
+    .faq-a { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
     /* Footer */
-    .footer {
-      border-top: 1px solid var(--border-color);
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--text-dim);
-      font-size: 14px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-bottom: 16px;
-    }
-
-    .footer-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-    }
-
-    .footer-link:hover {
-      color: var(--color-cyan);
-    }
+    .footer { border-top: 1px solid var(--border-color); padding: 40px 20px; text-align: center; color: var(--text-dim); font-size: 14px; }
+    .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer-link { color: var(--text-muted); text-decoration: none; font-size: 13px; }
+    .footer-link:hover { color: var(--color-cyan); }
 
     @media (max-width: 768px) {
       .hero-title { font-size: 36px; }
@@ -701,6 +231,7 @@
       .nav-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
     }
   </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -725,10 +256,8 @@
     </nav>
 
     <div class="header-actions">
-      <a href="https://jup.ag" target="_blank" class="btn-buy">
-        🛒 Buy $pQT
-      </a>
-      <button class="btn-primary" id="btn-connect-header" onclick="connectWallet()">Connect Wallet</button>
+      <a id="btn-buy-header" href="https://jup.ag" target="_blank" class="btn-buy">🛒 Buy $pQT</a>
+      <button class="btn-primary" id="btn-connect-header" onclick="toggleWalletConnection()">Connect Wallet</button>
     </div>
   </header>
 
@@ -746,15 +275,9 @@
         A fully decentralized, supply-tightening monetary protocol featuring an automated 70% burn rate on withheld transfer fees, instant Crank Bounty payouts, and zero token inflation.
       </p>
       <div class="hero-actions">
-        <a href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 28px; font-size: 16px;">
-          🛒 Buy $pQT on Jupiter
-        </a>
-        <a href="#about-project" class="btn-primary" style="padding: 12px 24px; font-size: 15px;">
-          📖 About Project
-        </a>
-        <a href="#security" class="btn-secondary" style="padding: 12px 24px; font-size: 15px;">
-          🛡️ Audit &amp; Safety
-        </a>
+        <a id="btn-buy-hero" href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 28px; font-size: 16px;">🛒 Buy $pQT on Jupiter</a>
+        <a href="#about-project" class="btn-primary" style="padding: 12px 24px; font-size: 15px;">📖 About Project</a>
+        <a href="#security" class="btn-secondary" style="padding: 12px 24px; font-size: 15px;">🛡️ Audit &amp; Safety</a>
       </div>
     </section>
 
@@ -827,9 +350,7 @@
             $pQT operates with zero admin controls. Both Mint Authority and Freeze Authority have been permanently set to <code class="code-inline">None</code>. The treasury account is governed by a Program Derived Address (PDA), ensuring that protocol parameters can never be altered or compromised.
           </p>
         </div>
-        <a href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 24px; white-space: nowrap;">
-          🛒 Trade $pQT Now
-        </a>
+        <a id="btn-buy-highlight" href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 24px; white-space: nowrap;">🛒 Trade $pQT Now</a>
       </div>
     </section>
 
@@ -843,10 +364,9 @@
           </p>
         </div>
         <div class="contract-address-box">
+          <span id="network-badge" style="color: var(--color-purple);">Network: —</span>
           <span id="wallet-status-badge" style="color: var(--color-amber);">Wallet: Disconnected</span>
-          <button class="btn-primary" id="btn-connect-wallet" onclick="connectWallet()" style="padding: 6px 14px; font-size: 12px;">
-            Connect Wallet
-          </button>
+          <button class="btn-primary" id="btn-connect-wallet" onclick="toggleWalletConnection()" style="padding: 6px 14px; font-size: 12px;">Connect Wallet</button>
         </div>
       </div>
 
@@ -866,12 +386,12 @@
             <div class="action-title">
               <span>🔍 Scan Fee Source Accounts</span>
             </div>
-            <div class="action-desc">Scans Token-2022 accounts across the cluster for accumulated withheld fees.</div>
+            <div class="action-desc">Queries the RPC cluster for all Token-2022 accounts of the $pQT mint and reads accumulated withheld fees.</div>
           </button>
 
           <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
             <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Status Summary</div>
-            <div id="stat-found-accounts" style="font-size: 14px; font-weight: 700; color: var(--color-cyan);">Accounts with Fees: Ready to scan</div>
+            <div id="stat-found-accounts" style="font-size: 14px; font-weight: 700; color: var(--color-cyan);">Accounts with Fees: not scanned yet</div>
           </div>
         </div>
 
@@ -880,10 +400,8 @@
             <div class="dot dot-red"></div>
             <div class="dot dot-yellow"></div>
             <div class="dot dot-green"></div>
-            <span style="color: #6b7280; font-size: 11px; margin-left: 8px;">pqt-solana-cli v1.0.4 — web3-terminal</span>
+            <span style="color: #6b7280; font-size: 11px; margin-left: 8px;">pqt-solana-cli v1.1.0 — web3-terminal</span>
           </div>
-          <div class="log-line log-info">[SYSTEM] Web3 console initialized. Connected to Solana Devnet RPC.</div>
-          <div class="log-line log-warn">[WALLET] Please connect your Solana wallet to enable interactive instructions.</div>
         </div>
       </div>
     </section>
@@ -896,7 +414,7 @@
       </p>
 
       <div class="security-grid">
-        <a href="https://solscan.io" target="_blank" class="security-card">
+        <a id="link-solscan" href="https://solscan.io" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🔍</div>
             <div class="security-name">Solscan Explorer</div>
@@ -905,7 +423,7 @@
           <div class="security-badge">Verified Contract ↗</div>
         </a>
 
-        <a href="https://rugcheck.xyz" target="_blank" class="security-card">
+        <a id="link-rugcheck" href="https://rugcheck.xyz" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🛡️</div>
             <div class="security-name">RugCheck.xyz</div>
@@ -914,7 +432,7 @@
           <div class="security-badge" style="color: var(--color-cyan); background: rgba(0, 210, 255, 0.08);">Good Score / Low Risk ↗</div>
         </a>
 
-        <a href="https://jup.ag" target="_blank" class="security-card">
+        <a id="link-jupiter" href="https://jup.ag" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🪐</div>
             <div class="security-name">Jupiter AG</div>
@@ -923,7 +441,7 @@
           <div class="security-badge" style="color: var(--color-mint); background: rgba(0, 255, 135, 0.08);">Direct Swap / Buy ↗</div>
         </a>
 
-        <a href="https://dexscreener.com" target="_blank" class="security-card">
+        <a id="link-dexscreener" href="https://dexscreener.com" target="_blank" class="security-card">
           <div>
             <div class="security-icon">📊</div>
             <div class="security-name">DexScreener</div>
@@ -997,29 +515,46 @@
 
   <footer class="footer">
     <div class="footer-links">
-      <a href="https://solscan.io" target="_blank" class="footer-link">Solscan</a>
-      <a href="https://jup.ag" target="_blank" class="footer-link">Jupiter Swap</a>
-      <a href="https://rugcheck.xyz" target="_blank" class="footer-link">RugCheck Audit</a>
-      <a href="https://dexscreener.com" target="_blank" class="footer-link">DexScreener</a>
+      <a id="link-footer-solscan" href="https://solscan.io" target="_blank" class="footer-link">Solscan</a>
+      <a id="link-footer-jupiter" href="https://jup.ag" target="_blank" class="footer-link">Jupiter Swap</a>
+      <a id="link-footer-rugcheck" href="https://rugcheck.xyz" target="_blank" class="footer-link">RugCheck Audit</a>
+      <a id="link-footer-dexscreener" href="https://dexscreener.com" target="_blank" class="footer-link">DexScreener</a>
     </div>
     <p>© 2026 pQT Protocol. All rights reserved. Powered by Solana Token-2022 Extensions.</p>
   </footer>
 
   <!-- Web3 Integration Script -->
   <script>
-    // Константы смарт-контракта pQT Protocol
+    // ======================= Network Configuration =======================
+    // Single source of truth for the target cluster.
+    // Set to "devnet" if the program is deployed on devnet.
+    const NETWORK = "mainnet-beta"; // "mainnet-beta" | "devnet"
+    const RPC_URL = NETWORK === "devnet"
+      ? "https://api.devnet.solana.com"
+      : "https://api.mainnet-beta.solana.com";
+    const CLUSTER_QUERY = NETWORK === "devnet" ? "?cluster=devnet" : "";
+
+    const connection = new solanaWeb3.Connection(RPC_URL, "confirmed");
+
+    // ======================= Smart Contract Constants =======================
     const PROGRAM_ID = new solanaWeb3.PublicKey("5qG8oL162Y3sv4ndbLcD98pEGsWFRVjpngYU5BcuYJNy");
     const MINT = new solanaWeb3.PublicKey("CFTq2NN8RLafkP5ET1JRfLkb8ib3HuMU66aNxfowJSyD");
     const VAULT_AUTHORITY = new solanaWeb3.PublicKey("5NyvMUifoWkQenJQb7JKvYWj3aJFdnMWAewhT47hyiLk");
     const TREASURY_PUBKEY = new solanaWeb3.PublicKey("Aujqe2segKaz63LMZRgyxYJLin8rLZWQ97StP3xMbegb");
 
-    const FEE_SOURCE_ACCOUNTS = [
+    // Fallback sources used only until a real on-chain scan has been performed.
+    const FALLBACK_FEE_SOURCES = [
       new solanaWeb3.PublicKey("CSQZB1Ff6jff1njtpkEj7rAiE1XbqhSLojzskZtQgiU5"),
     ];
 
     const IDL = {
       "address": "5qG8oL162Y3sv4ndbLcD98pEGsWFRVjpngYU5BcuYJNy",
-      "metadata": { "name": "pqt_protocol", "version": "0.1.0" },
+      "metadata": {
+        "name": "pqt_protocol",
+        "version": "0.1.0",
+        "spec": "0.1.0",
+        "description": "Programmatic Quantitative Tightening protocol"
+      },
       "instructions": [
         {
           "name": "harvest_and_distribute",
@@ -1038,10 +573,19 @@
       ]
     };
 
+    // ======================= Runtime State =======================
     let provider = null;
     let program = null;
     let walletPublicKey = null;
+    let walletAdapter = null;
+    let tokenDecimals = 9;            // updated from on-chain mint info
+    let scannedFeeSources = [];       // populated by queryWithheldAccounts()
 
+    // Extension type 2 = TransferFeeAmount (account extension holding withheld fees)
+    const EXT_TRANSFER_FEE_AMOUNT = 2;
+    const TOKEN_ACCOUNT_BASE_SIZE = 165; // bytes before TLV extension block
+
+    // ======================= Terminal Helper =======================
     function logToTerminal(message, typeClass = 'log-info') {
       const terminal = document.getElementById('terminal');
       if (!terminal) return;
@@ -1052,7 +596,6 @@
       terminal.scrollTop = terminal.scrollHeight;
     }
 
-    // Извлечение библиотеки Anchor из window без ошибок
     function getAnchorLib() {
       if (window.anchor) return window.anchor;
       if (window.Anchor) return window.Anchor;
@@ -1060,46 +603,247 @@
       return null;
     }
 
+    function shortAddr(pubkey) {
+      const b58 = pubkey.toBase58();
+      return `${b58.slice(0, 4)}...${b58.slice(-4)}`;
+    }
+
+    function isUserRejection(err) {
+      if (!err) return false;
+      if (err.code === 4001) return true;
+      return /rejected|declined|cancel/i.test(err.message || '');
+    }
+
+    // ======================= Wallet Connection =======================
     async function connectWallet() {
       try {
-        const providerAdapter = window.solana || window.solflare;
-        if (!providerAdapter) {
+        const adapter = window.solana || window.solflare;
+        if (!adapter) {
           logToTerminal('[ERROR] No Solana wallet extension found! Please install Phantom or Solflare.', 'log-warn');
-          alert('Пожалуйста, установите расширение Phantom или Solflare для работы с Web3.');
+          return;
+        }
+        if (typeof adapter.signTransaction !== 'function') {
+          logToTerminal('[ERROR] Wallet does not expose signTransaction and cannot be used with Anchor.', 'log-warn');
           return;
         }
 
         const anchorLib = getAnchorLib();
         if (!anchorLib) {
           logToTerminal('[ERROR] Anchor library is not loaded properly from CDN.', 'log-warn');
-          alert('Ошибка загрузки библиотеки Anchor. Попробуйте обновить страницу.');
           return;
         }
 
         logToTerminal('[WALLET] Requesting wallet connection...', 'log-info');
-        const response = await providerAdapter.connect();
+        const response = await adapter.connect();
+        walletAdapter = adapter;
         walletPublicKey = response.publicKey;
 
-        const connection = new solanaWeb3.Connection("https://api.devnet.solana.com", "confirmed");
-        
-        provider = new anchorLib.AnchorProvider(connection, providerAdapter, { commitment: "confirmed" });
+        provider = new anchorLib.AnchorProvider(connection, adapter, { commitment: "confirmed" });
         program = new anchorLib.Program(IDL, provider);
 
-        const shortAddr = `${walletPublicKey.toBase58().slice(0, 4)}...${walletPublicKey.toBase58().slice(-4)}`;
-        
-        document.getElementById('wallet-status-badge').innerText = `Connected: ${shortAddr}`;
+        await ensureTokenDecimals();
+        attachWalletEvents();
+
+        const short = shortAddr(walletPublicKey);
+        document.getElementById('wallet-status-badge').innerText = `Connected: ${short}`;
         document.getElementById('wallet-status-badge').style.color = "var(--color-mint)";
-        document.getElementById('btn-connect-wallet').innerText = shortAddr;
-        document.getElementById('btn-connect-header').innerText = shortAddr;
-        
+        document.getElementById('btn-connect-wallet').innerText = 'Disconnect';
+        document.getElementById('btn-connect-header').innerText = 'Disconnect';
+
         const harvestBtn = document.getElementById('btn-harvest');
         harvestBtn.disabled = false;
         harvestBtn.style.opacity = "1";
 
         logToTerminal(`[WALLET] Successfully connected: ${walletPublicKey.toBase58()}`, 'log-success');
       } catch (err) {
-        logToTerminal(`[ERROR] Connection failed: ${err.message}`, 'log-warn');
+        if (isUserRejection(err)) {
+          logToTerminal('[WALLET] Connection rejected by user.', 'log-warn');
+        } else {
+          logToTerminal(`[ERROR] Connection failed: ${err.message}`, 'log-warn');
+        }
       }
+    }
+
+    function handleDisconnect() {
+      walletPublicKey = null;
+      provider = null;
+      program = null;
+      walletAdapter = null;
+
+      document.getElementById('wallet-status-badge').innerText = 'Wallet: Disconnected';
+      document.getElementById('wallet-status-badge').style.color = "var(--color-amber)";
+      document.getElementById('btn-connect-wallet').innerText = 'Connect Wallet';
+      document.getElementById('btn-connect-header').innerText = 'Connect Wallet';
+
+      const harvestBtn = document.getElementById('btn-harvest');
+      harvestBtn.disabled = true;
+      harvestBtn.style.opacity = "0.5";
+
+      logToTerminal('[WALLET] Wallet disconnected.', 'log-info');
+    }
+
+    async function disconnectWallet() {
+      try {
+        if (walletAdapter && typeof walletAdapter.disconnect === 'function') {
+          await walletAdapter.disconnect();
+        }
+      } catch (err) {
+        logToTerminal(`[WARN] Wallet adapter disconnect error: ${err.message}`, 'log-warn');
+      }
+      handleDisconnect();
+    }
+
+    function toggleWalletConnection() {
+      if (walletPublicKey) {
+        disconnectWallet();
+      } else {
+        connectWallet();
+      }
+    }
+
+    function attachWalletEvents() {
+      if (!walletAdapter || typeof walletAdapter.on !== 'function') return;
+      walletAdapter.on('disconnect', handleDisconnect);
+      walletAdapter.on('accountChanged', (newPublicKey) => {
+        if (newPublicKey) {
+          walletPublicKey = newPublicKey;
+          const short = shortAddr(walletPublicKey);
+          document.getElementById('wallet-status-badge').innerText = `Connected: ${short}`;
+          logToTerminal(`[WALLET] Account changed: ${walletPublicKey.toBase58()}`, 'log-info');
+        } else {
+          handleDisconnect();
+        }
+      });
+    }
+
+    async function ensureTokenDecimals() {
+      try {
+        const mintInfo = await splToken.getMint(connection, MINT, "confirmed", splToken.TOKEN_2022_PROGRAM_ID);
+        tokenDecimals = mintInfo.decimals;
+        logToTerminal(`[MINT] Decimals loaded: ${tokenDecimals}`, 'log-info');
+      } catch (err) {
+        logToTerminal(`[WARN] Could not load mint decimals (${err.message}); using 9.`, 'log-warn');
+      }
+    }
+
+    // ======================= Token-2022 Fee Scanning =======================
+    // Parses the TLV extension block of a Token-2022 account and returns the
+    // withheld transfer fee (u64 as BigInt), or 0n if the extension is absent.
+    function parseWithheldAmount(accountData) {
+      try {
+        if (accountData.length <= TOKEN_ACCOUNT_BASE_SIZE) return 0n;
+        let offset = TOKEN_ACCOUNT_BASE_SIZE;
+        while (offset + 4 <= accountData.length) {
+          const extType = accountData.readUInt16LE(offset);
+          const extLen = accountData.readUInt16LE(offset + 2);
+          if (extType === 0) break; // Uninitialized / padding
+          if (extType === EXT_TRANSFER_FEE_AMOUNT && extLen >= 8) {
+            return accountData.readBigUInt64LE(offset + 4);
+          }
+          offset += 4 + extLen;
+        }
+      } catch (e) { /* malformed data — treat as zero */ }
+      return 0n;
+    }
+
+    async function queryWithheldAccounts() {
+      logToTerminal(`[SCAN] Querying ${NETWORK} for all Token-2022 accounts of mint ${MINT.toBase58()}...`, 'log-info');
+      const statEl = document.getElementById('stat-found-accounts');
+      statEl.innerText = 'Accounts with Fees: scanning...';
+      statEl.style.color = 'var(--color-amber)';
+
+      try {
+        const accountsResp = await connection.getProgramAccounts(splToken.TOKEN_2022_PROGRAM_ID, {
+          commitment: "confirmed",
+          filters: [
+            { memcmp: { offset: 0, bytes: MINT.toBase58() } }, // token account field #0 = mint
+          ],
+        });
+
+        logToTerminal(`[SCAN] ${accountsResp.length} token account(s) found for the $pQT mint.`, 'log-info');
+
+        let totalWithheld = 0n;
+        const sources = [];
+        for (const { pubkey, account } of accountsResp) {
+          const withheld = parseWithheldAmount(account.data);
+          if (withheld > 0n) {
+            totalWithheld += withheld;
+            sources.push(pubkey);
+            logToTerminal(`[SCAN] ${shortAddr(pubkey)} — withheld: ${formatTokenAmount(withheld)} pQT`, 'log-info');
+          }
+        }
+
+        scannedFeeSources = sources;
+
+        if (sources.length === 0) {
+          statEl.innerText = 'Accounts with Fees: 0 (no fees accumulated yet)';
+          statEl.style.color = 'var(--color-amber)';
+          logToTerminal('[SCAN] No withheld fees found. Harvesting is not yet profitable.', 'log-warn');
+        } else {
+          statEl.innerText = `Accounts with Fees: ${sources.length} (${formatTokenAmount(totalWithheld)} pQT)`;
+          statEl.style.color = 'var(--color-mint)';
+          logToTerminal(`[SCAN] Done: ${sources.length} account(s) hold ${formatTokenAmount(totalWithheld)} pQT in withheld fees.`, 'log-success');
+        }
+      } catch (err) {
+        statEl.innerText = 'Accounts with Fees: scan failed';
+        statEl.style.color = 'var(--color-red)';
+        logToTerminal(`[ERROR] Scan failed: ${err.message}`, 'log-warn');
+        if (/too large|410|limit/i.test(err.message)) {
+          logToTerminal('[HINT] Public RPC rejected the query. Use a dedicated RPC endpoint (Helius/QuickNode) for full-mint scans.', 'log-info');
+        }
+      }
+    }
+
+    function formatTokenAmount(rawBigInt) {
+      const value = Number(rawBigInt) / (10 ** tokenDecimals);
+      return value.toLocaleString('en-US', { maximumFractionDigits: tokenDecimals });
+    }
+
+    function getActiveFeeSources() {
+      return scannedFeeSources.length > 0 ? scannedFeeSources : FALLBACK_FEE_SOURCES;
+    }
+
+    // ======================= Harvest & Distribute =======================
+    function buildHarvestBuilder(preInstructions) {
+      const callerTokenAccount = splToken.getAssociatedTokenAddressSync(
+        MINT, walletPublicKey, false, splToken.TOKEN_2022_PROGRAM_ID
+      );
+      const treasuryTokenAccount = splToken.getAssociatedTokenAddressSync(
+        MINT, TREASURY_PUBKEY, false, splToken.TOKEN_2022_PROGRAM_ID
+      );
+      const vault = splToken.getAssociatedTokenAddressSync(
+        MINT, VAULT_AUTHORITY, true, splToken.TOKEN_2022_PROGRAM_ID
+      );
+
+      const remainingAccounts = getActiveFeeSources().map((pubkey) => ({
+        pubkey,
+        isWritable: true,
+        isSigner: false,
+      }));
+
+      return program.methods
+        .harvestAndDistribute()
+        .accounts({
+          caller: walletPublicKey,
+          mint: MINT,
+          vault: vault,
+          vaultAuthority: VAULT_AUTHORITY,
+          callerTokenAccount: callerTokenAccount,
+          treasuryTokenAccount: treasuryTokenAccount,
+          tokenProgram: splToken.TOKEN_2022_PROGRAM_ID,
+        })
+        .remainingAccounts(remainingAccounts)
+        .preInstructions(preInstructions || []);
+    }
+
+    // Creates an ATA initialization instruction if the account does not exist yet.
+    async function maybeCreateAtaInstruction(ataAddress, ownerPublicKey, payerPublicKey, label) {
+      const info = await connection.getAccountInfo(ataAddress);
+      if (info) return null;
+      logToTerminal(`[ATA] ${label} (${shortAddr(ataAddress)}) does not exist — it will be created in this transaction.`, 'log-warn');
+      return splToken.createAssociatedTokenAccountInstruction(
+        payerPublicKey, ataAddress, ownerPublicKey, MINT, splToken.TOKEN_2022_PROGRAM_ID
+      );
     }
 
     async function executeHarvestAndDistribute() {
@@ -1108,64 +852,97 @@
         return;
       }
 
+      const sourceAccounts = getActiveFeeSources();
+      if (sourceAccounts.length === 0) {
+        logToTerminal('[ERROR] No fee source accounts available. Run a scan first.', 'log-warn');
+        return;
+      }
+
       try {
-        logToTerminal('[TX] Calculating Associated Token Accounts (ATA)...', 'log-info');
+        logToTerminal('[TX] Preparing associated token accounts...', 'log-info');
 
         const callerTokenAccount = splToken.getAssociatedTokenAddressSync(
-          MINT,
-          walletPublicKey,
-          false,
-          splToken.TOKEN_2022_PROGRAM_ID
+          MINT, walletPublicKey, false, splToken.TOKEN_2022_PROGRAM_ID
         );
-
         const treasuryTokenAccount = splToken.getAssociatedTokenAddressSync(
-          MINT,
-          TREASURY_PUBKEY,
-          false,
-          splToken.TOKEN_2022_PROGRAM_ID
+          MINT, TREASURY_PUBKEY, false, splToken.TOKEN_2022_PROGRAM_ID
         );
 
-        const vault = splToken.getAssociatedTokenAddressSync(
-          MINT,
-          VAULT_AUTHORITY,
-          true,
-          splToken.TOKEN_2022_PROGRAM_ID
+        const preInstructions = [];
+
+        const callerAtaIx = await maybeCreateAtaInstruction(
+          callerTokenAccount, walletPublicKey, walletPublicKey, 'Caller token account'
         );
+        if (callerAtaIx) preInstructions.push(callerAtaIx);
 
-        const remainingAccounts = FEE_SOURCE_ACCOUNTS.map((pubkey) => ({
-          pubkey,
-          isWritable: true,
-          isSigner: false,
-        }));
+        const treasuryAtaIx = await maybeCreateAtaInstruction(
+          treasuryTokenAccount, TREASURY_PUBKEY, walletPublicKey, 'Treasury token account'
+        );
+        if (treasuryAtaIx) {
+          preInstructions.push(treasuryAtaIx);
+          logToTerminal('[TX] Note: you are paying the one-time rent for the treasury ATA.', 'log-warn');
+        }
 
-        logToTerminal(`[TX] Sending transaction via ${walletPublicKey.toBase58().slice(0,6)}...`, 'log-warn');
+        // Simulate first — never burn transaction fees on a call that would fail.
+        logToTerminal(`[TX] Simulating harvest across ${sourceAccounts.length} source account(s)...`, 'log-info');
+        const simulation = await buildHarvestBuilder(preInstructions).simulate();
 
-        const txSig = await program.methods
-          .harvestAndDistribute()
-          .accounts({
-            caller: walletPublicKey,
-            mint: MINT,
-            vault: vault,
-            vaultAuthority: VAULT_AUTHORITY,
-            callerTokenAccount: callerTokenAccount,
-            treasuryTokenAccount: treasuryTokenAccount,
-            tokenProgram: splToken.TOKEN_2022_PROGRAM_ID,
-          })
-          .remainingAccounts(remainingAccounts)
-          .rpc();
+        if (simulation.value.err) {
+          logToTerminal(`[ERROR] Simulation failed: ${JSON.stringify(simulation.value.err)}`, 'log-warn');
+          const logs = (simulation.value.logs || []).slice(-5);
+          logs.forEach((line) => logToTerminal(`  ${line}`, 'log-info'));
+          logToTerminal('[HINT] No accumulated fees yet, or treasury/vault setup mismatch.', 'log-info');
+          return;
+        }
+        logToTerminal('[TX] Simulation successful. Sending transaction...', 'log-info');
+
+        const txSig = await buildHarvestBuilder(preInstructions).rpc();
 
         logToTerminal(`[SUCCESS] Transaction confirmed! Hash: ${txSig}`, 'log-success');
-        logToTerminal(`[EXPLORER] https://explorer.solana.com/tx/${txSig}?cluster=devnet`, 'log-info');
+        logToTerminal(`[EXPLORER] https://explorer.solana.com/tx/${txSig}${CLUSTER_QUERY}`, 'log-info');
+
+        // Refresh the fee scan so the UI reflects post-harvest state.
+        queryWithheldAccounts();
       } catch (err) {
-        console.error(err);
-        logToTerminal(`[ERROR] Harvest failed: ${err.message}`, 'log-warn');
+        if (isUserRejection(err)) {
+          logToTerminal('[TX] Transaction rejected by user.', 'log-warn');
+        } else {
+          console.error(err);
+          logToTerminal(`[ERROR] Harvest failed: ${err.message}`, 'log-warn');
+        }
       }
     }
 
-    function queryWithheldAccounts() {
-      logToTerminal(`[SCAN] Found ${FEE_SOURCE_ACCOUNTS.length} configured source account(s).`, 'log-info');
-      document.getElementById('stat-found-accounts').innerText = `Accounts with Fees: ${FEE_SOURCE_ACCOUNTS.length} Active`;
-    }
+    // ======================= Page Initialization =======================
+    (function init() {
+      const mintB58 = MINT.toBase58();
+
+      // Point all buy/audit links at the actual mint address.
+      const jupUrl = `https://jup.ag/swap/SOL-${mintB58}`;
+      ['btn-buy-header', 'btn-buy-hero', 'btn-buy-highlight', 'link-jupiter', 'link-footer-jupiter']
+        .forEach((id) => { const el = document.getElementById(id); if (el) el.href = jupUrl; });
+
+      const linkMap = {
+        'link-solscan': `https://solscan.io/token/${mintB58}`,
+        'link-footer-solscan': `https://solscan.io/token/${mintB58}`,
+        'link-rugcheck': `https://rugcheck.xyz/tokens/${mintB58}`,
+        'link-footer-rugcheck': `https://rugcheck.xyz/tokens/${mintB58}`,
+        'link-dexscreener': `https://dexscreener.com/solana/${mintB58}`,
+        'link-footer-dexscreener': `https://dexscreener.com/solana/${mintB58}`,
+      };
+      Object.entries(linkMap).forEach(([id, url]) => { const el = document.getElementById(id); if (el) el.href = url; });
+
+      // Network badge + terminal banner.
+      const badge = document.getElementById('network-badge');
+      badge.innerText = `Network: ${NETWORK}`;
+      badge.style.color = NETWORK === 'devnet' ? 'var(--color-amber)' : 'var(--color-mint)';
+
+      logToTerminal('[SYSTEM] Web3 console initialized. Connected to Solana ' + NETWORK + ' RPC.', 'log-info');
+      logToTerminal('[WALLET] Please connect your Solana wallet to enable interactive instructions.', 'log-warn');
+      if (NETWORK === 'devnet') {
+        logToTerminal('[WARN] Console is pointed at DEVNET while buy links target mainnet. Check the NETWORK constant.', 'log-warn');
+      }
+    })();
   </script>
 </body>
 </html>
