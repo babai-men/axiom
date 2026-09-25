@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>pQT Protocol — Programmatic Quantitative Tightening</title>
+  
+  <!-- Solana Web3 & Anchor Client Libraries -->
+  <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
+  <script src="https://unpkg.com/@coral-xyz/anchor@0.30.1/dist/browser/anchor.umd.js"></script>
+  <script src="https://unpkg.com/@solana/spl-token@0.4.8/lib/index.iife.min.js"></script>
+
   <style>
     /* ==========================================================================
        pQT Protocol — Web3 Neon Theme (Purple / Cyan / Mint)
@@ -50,7 +56,6 @@
       scroll-behavior: smooth;
     }
 
-    /* Layout Containers */
     .container {
       max-width: var(--max-width);
       margin: 0 auto;
@@ -316,7 +321,7 @@
       color: var(--text-main);
     }
 
-    /* NEW: About Project Detailed Section */
+    /* About Section */
     .about-section {
       margin-bottom: 80px;
     }
@@ -393,7 +398,7 @@
       line-height: 1.6;
     }
 
-    /* Smart Contract Console (Web3 Interactor) */
+    /* Smart Contract Console */
     .console-container {
       background: var(--bg-console);
       border: 1px solid var(--border-color);
@@ -467,7 +472,7 @@
       color: var(--text-main);
     }
 
-    .action-btn:hover {
+    .action-btn:hover:not(:disabled) {
       background: var(--bg-card-hover);
       border-color: var(--color-cyan);
       transform: translateX(4px);
@@ -529,7 +534,7 @@
     .log-success { color: var(--color-mint); }
     .log-warn { color: var(--color-amber); }
 
-    /* Security & Verification Hub */
+    /* Security Hub */
     .security-section {
       margin-bottom: 80px;
     }
@@ -588,7 +593,7 @@
       width: fit-content;
     }
 
-    /* Detailed Tokenomics */
+    /* Tokenomics */
     .tokenomics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -716,7 +721,7 @@
   <header class="header">
     <div class="brand">
       <div class="logo-ring">
-        <img src="pqt-logo.png" alt="pQT Protocol Logo">
+        <img src="pqt-logo.png" alt="pQT Protocol Logo" onerror="this.style.display='none'">
       </div>
       <div>
         <span class="brand-title">pQT Protocol</span>
@@ -733,11 +738,10 @@
     </nav>
 
     <div class="header-actions">
-      <!-- Buy Token CTA Button -->
       <a href="https://jup.ag" target="_blank" class="btn-buy">
         🛒 Buy $pQT
       </a>
-      <button class="btn-primary" onclick="connectWallet()">Connect Wallet</button>
+      <button class="btn-primary" id="btn-connect-header" onclick="connectWallet()">Connect Wallet</button>
     </div>
   </header>
 
@@ -755,7 +759,6 @@
         A fully decentralized, supply-tightening monetary protocol featuring an automated 70% burn rate on withheld transfer fees, instant Crank Bounty payouts, and zero token inflation.
       </p>
       <div class="hero-actions">
-        <!-- Direct Buy Button -->
         <a href="https://jup.ag" target="_blank" class="btn-buy" style="padding: 12px 28px; font-size: 16px;">
           🛒 Buy $pQT on Jupiter
         </a>
@@ -770,7 +773,7 @@
 
     <!-- Vector Banner Showcase -->
     <section class="banner-section">
-      <img src="pqt-banner.svg" alt="pQT Protocol Architecture Banner" class="banner-img">
+      <img src="pqt-banner.svg" alt="pQT Protocol Architecture Banner" class="banner-img" onerror="this.style.display='none'">
     </section>
 
     <!-- Live Protocol Stats Bar -->
@@ -797,7 +800,7 @@
       </div>
     </section>
 
-    <!-- NEW SECTION: Detailed About Project -->
+    <!-- About Project -->
     <section id="about-project" class="about-section">
       <h2 class="section-title">About pQT Protocol</h2>
       <p class="section-subtitle">
@@ -805,7 +808,6 @@
       </p>
 
       <div class="about-grid">
-        <!-- Pillar 1 -->
         <div class="about-card">
           <div class="about-card-icon">📉</div>
           <h3 class="about-card-title">The Inflation Problem</h3>
@@ -814,7 +816,6 @@
           </p>
         </div>
 
-        <!-- Pillar 2 -->
         <div class="about-card">
           <div class="about-card-icon">⚡</div>
           <h3 class="about-card-title">The Token-2022 Solution</h3>
@@ -823,7 +824,6 @@
           </p>
         </div>
 
-        <!-- Pillar 3 -->
         <div class="about-card">
           <div class="about-card-icon">🤖</div>
           <h3 class="about-card-title">Permissionless Execution</h3>
@@ -833,7 +833,6 @@
         </div>
       </div>
 
-      <!-- Protocol Feature Highlight Box -->
       <div class="about-highlight-box">
         <div class="about-highlight-content">
           <h3 class="about-highlight-title">Built for Immutable Trust &amp; Pure Deflation</h3>
@@ -852,42 +851,43 @@
       <div class="console-header">
         <div>
           <h2 style="font-size: 22px; font-weight: 800;">Smart Contract Interaction Console</h2>
-          <p style="font-size: 13px; color: var(--text-muted);">Trigger on-chain fee harvesting, verify withheld accounts, and claim crank bounties.</p>
+          <p style="font-size: 13px; color: var(--text-muted);">
+            Trigger on-chain fee harvesting, collect 20% crank bounty, and execute programmed token burn.
+          </p>
         </div>
         <div class="contract-address-box">
-          <span>Mint: pQT2022...SolanaMintAddress</span>
-          <button class="btn-copy" onclick="copyMintAddress()" title="Copy Address">📋 Copy</button>
-          <a href="https://solscan.io" target="_blank" style="color: var(--color-mint); text-decoration: none; font-size: 12px; margin-left: 6px;">[Solscan ↗]</a>
+          <span id="wallet-status-badge" style="color: var(--color-amber);">Wallet: Disconnected</span>
+          <button class="btn-primary" id="btn-connect-wallet" onclick="connectWallet()" style="padding: 6px 14px; font-size: 12px;">
+            Connect Wallet
+          </button>
         </div>
       </div>
 
       <div class="console-grid">
-        <!-- Interactive Controls -->
         <div class="console-actions">
-          <button class="action-btn" onclick="executeHarvest()">
+          <button class="action-btn" id="btn-harvest" onclick="executeHarvestAndDistribute()" disabled style="opacity: 0.5;">
             <div class="action-title">
-              <span>🔥 Execute Harvest &amp; Burn</span>
+              <span>🔥 Execute Harvest &amp; Distribute</span>
               <span style="font-size: 11px; color: var(--color-mint); background: rgba(0,255,135,0.1); padding: 2px 6px; border-radius: 4px;">Public Call</span>
             </div>
-            <div class="action-desc">Calls <code class="code-inline">harvest_withheld_tokens</code> to collect fees, burn 70%, send 20% bounty to caller, and 10% to treasury.</div>
+            <div class="action-desc">
+              Calls <code class="code-inline">harvest_and_distribute</code>: collects fees, burns 70%, sends 20% bounty to you, and 10% to treasury.
+            </div>
           </button>
 
-          <button class="action-btn" onclick="queryWithheldFees()">
+          <button class="action-btn" onclick="queryWithheldAccounts()">
             <div class="action-title">
-              <span>🔍 Query Withheld Fee Pool</span>
+              <span>🔍 Scan Fee Source Accounts</span>
             </div>
-            <div class="action-desc">Scans token accounts across Solana cluster to aggregate total withheld fees ready for harvesting.</div>
+            <div class="action-desc">Scans Token-2022 accounts across the cluster for accumulated withheld fees.</div>
           </button>
 
-          <button class="action-btn" onclick="simulateBounty()">
-            <div class="action-title">
-              <span>⚡ Estimate Crank Bounty</span>
-            </div>
-            <div class="action-desc">Calculates your expected 20% reward payout for executing the harvest transaction.</div>
-          </button>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Status Summary</div>
+            <div id="stat-found-accounts" style="font-size: 14px; font-weight: 700; color: var(--color-cyan);">Accounts with Fees: Ready to scan</div>
+          </div>
         </div>
 
-        <!-- Terminal Output Window -->
         <div class="terminal-box" id="terminal">
           <div class="terminal-bar">
             <div class="dot dot-red"></div>
@@ -895,9 +895,8 @@
             <div class="dot dot-green"></div>
             <span style="color: #6b7280; font-size: 11px; margin-left: 8px;">pqt-solana-cli v1.0.4 — web3-terminal</span>
           </div>
-          <div class="log-line log-info">[SYSTEM] Web3 console initialized. Connected to Solana Mainnet-Beta RPC.</div>
-          <div class="log-line log-info">[STATUS] Mint authority disabled. Transfer Fee extension active (5 bps).</div>
-          <div class="log-line log-success">[READY] Select an action on the left panel to interact with smart contract.</div>
+          <div class="log-line log-info">[SYSTEM] Web3 console initialized. Connected to Solana Devnet RPC.</div>
+          <div class="log-line log-warn">[WALLET] Please connect your Solana wallet to enable interactive instructions.</div>
         </div>
       </div>
     </section>
@@ -910,7 +909,6 @@
       </p>
 
       <div class="security-grid">
-        <!-- Solscan Card -->
         <a href="https://solscan.io" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🔍</div>
@@ -920,7 +918,6 @@
           <div class="security-badge">Verified Contract ↗</div>
         </a>
 
-        <!-- RugCheck Card -->
         <a href="https://rugcheck.xyz" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🛡️</div>
@@ -930,7 +927,6 @@
           <div class="security-badge" style="color: var(--color-cyan); background: rgba(0, 210, 255, 0.08);">Good Score / Low Risk ↗</div>
         </a>
 
-        <!-- Jupiter Swap Card -->
         <a href="https://jup.ag" target="_blank" class="security-card">
           <div>
             <div class="security-icon">🪐</div>
@@ -940,7 +936,6 @@
           <div class="security-badge" style="color: var(--color-mint); background: rgba(0, 255, 135, 0.08);">Direct Swap / Buy ↗</div>
         </a>
 
-        <!-- DexScreener Card -->
         <a href="https://dexscreener.com" target="_blank" class="security-card">
           <div>
             <div class="security-icon">📊</div>
@@ -949,26 +944,15 @@
           </div>
           <div class="security-badge" style="color: var(--color-purple); background: rgba(139, 92, 246, 0.08);">Live Analytics ↗</div>
         </a>
-
-        <!-- Birdeye Analytics Card -->
-        <a href="https://birdeye.so" target="_blank" class="security-card">
-          <div>
-            <div class="security-icon">🦅</div>
-            <div class="security-name">Birdeye Analytics</div>
-            <div class="security-desc">In-depth Web3 trading data, order flow analysis, liquidity pool depth, and holder distribution metrics.</div>
-          </div>
-          <div class="security-badge">Market Data ↗</div>
-        </a>
       </div>
     </section>
 
-    <!-- Detailed Tokenomics Section -->
+    <!-- Detailed Tokenomics -->
     <section id="tokenomics" style="margin-bottom: 80px;">
       <h2 class="section-title">Fee Distribution Architecture</h2>
       <p class="section-subtitle">Every token transfer incurs a transparent 0.05% fee collected in native $pQT tokens and automatically split upon harvest.</p>
 
       <div class="tokenomics-grid">
-        <!-- 70% Auto-Burn -->
         <div class="card">
           <div class="card-value purple">70%</div>
           <h3 class="card-title">🔥 Programmed Burn</h3>
@@ -977,7 +961,6 @@
           </p>
         </div>
 
-        <!-- 20% Crank Bounty -->
         <div class="card">
           <div class="card-value cyan">20%</div>
           <h3 class="card-title">⚡ Crank Bounty Reward</h3>
@@ -986,7 +969,6 @@
           </p>
         </div>
 
-        <!-- 10% Treasury -->
         <div class="card">
           <div class="card-value mint">10%</div>
           <h3 class="card-title">🛡️ Treasury Vault</h3>
@@ -1015,7 +997,7 @@
 
         <div class="faq-card">
           <div class="faq-q">How does the 20% Crank Bounty incentive work?</div>
-          <div class="faq-a">Anyone can trigger the <code class="code-inline">harvest_withheld_tokens</code> contract instruction. When invoked, 20% of all accumulated fees across token accounts are instantly sent to the transaction caller's wallet as a bounty.</div>
+          <div class="faq-a">Anyone can trigger the <code class="code-inline">harvest_and_distribute</code> contract instruction. When invoked, 20% of all accumulated fees across token accounts are instantly sent to the transaction caller's wallet as a bounty.</div>
         </div>
 
         <div class="faq-card">
@@ -1026,62 +1008,159 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-links">
       <a href="https://solscan.io" target="_blank" class="footer-link">Solscan</a>
       <a href="https://jup.ag" target="_blank" class="footer-link">Jupiter Swap</a>
       <a href="https://rugcheck.xyz" target="_blank" class="footer-link">RugCheck Audit</a>
       <a href="https://dexscreener.com" target="_blank" class="footer-link">DexScreener</a>
-      <a href="https://github.com" target="_blank" class="footer-link">GitHub Spec</a>
     </div>
     <p>© 2026 pQT Protocol. All rights reserved. Powered by Solana Token-2022 Extensions.</p>
   </footer>
 
-  <!-- Web3 Console Scripts -->
+  <!-- Web3 Integration Script -->
   <script>
-    function copyMintAddress() {
-      const dummyAddress = "pQT2022111111111111111111111111111111111111";
-      navigator.clipboard.writeText(dummyAddress);
-      logToTerminal(`[COPY] Token Mint Address copied to clipboard!`, 'log-success');
-    }
+    // Константы смарт-контракта pQT Protocol
+    const PROGRAM_ID = new solanaWeb3.PublicKey("5qG8oL162Y3sv4ndbLcD98pEGsWFRVjpngYU5BcuYJNy");
+    const MINT = new solanaWeb3.PublicKey("CFTq2NN8RLafkP5ET1JRfLkb8ib3HuMU66aNxfowJSyD");
+    const VAULT_AUTHORITY = new solanaWeb3.PublicKey("5NyvMUifoWkQenJQb7JKvYWj3aJFdnMWAewhT47hyiLk");
+    const TREASURY_PUBKEY = new solanaWeb3.PublicKey("Aujqe2segKaz63LMZRgyxYJLin8rLZWQ97StP3xMbegb");
+
+    const FEE_SOURCE_ACCOUNTS = [
+      new solanaWeb3.PublicKey("CSQZB1Ff6jff1njtpkEj7rAiE1XbqhSLojzskZtQgiU5"),
+    ];
+
+    const IDL = {
+      "address": "5qG8oL162Y3sv4ndbLcD98pEGsWFRVjpngYU5BcuYJNy",
+      "metadata": { "name": "pqt_protocol", "version": "0.1.0" },
+      "instructions": [
+        {
+          "name": "harvest_and_distribute",
+          "discriminator": [161, 109, 210, 126, 12, 152, 40, 15],
+          "accounts": [
+            { "name": "caller", "writable": true, "signer": true },
+            { "name": "mint", "writable": true },
+            { "name": "vault", "writable": true },
+            { "name": "vault_authority" },
+            { "name": "caller_token_account", "writable": true },
+            { "name": "treasury_token_account", "writable": true },
+            { "name": "token_program" }
+          ],
+          "args": []
+        }
+      ]
+    };
+
+    let provider = null;
+    let program = null;
+    let walletPublicKey = null;
 
     function logToTerminal(message, typeClass = 'log-info') {
       const terminal = document.getElementById('terminal');
       const logLine = document.createElement('div');
       logLine.className = `log-line ${typeClass}`;
-      logLine.textContent = `${new Date().toLocaleTimeString()} ${message}`;
+      logLine.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
       terminal.appendChild(logLine);
       terminal.scrollTop = terminal.scrollHeight;
     }
 
-    function connectWallet() {
-      logToTerminal('[WALLET] Requesting connection to Solana wallet adapter...', 'log-warn');
-      setTimeout(() => {
-        logToTerminal('[WALLET] Connected to 7xKX...3b9e (Phantom Wallet)', 'log-success');
-      }, 600);
+    async function connectWallet() {
+      try {
+        const providerAdapter = window.solana || window.solflare;
+        if (!providerAdapter) {
+          logToTerminal('[ERROR] No Solana wallet extension found! Please install Phantom or Solflare.', 'log-warn');
+          alert('Пожалуйста, установите расширение Phantom или Solflare для работы с Web3.');
+          return;
+        }
+
+        logToTerminal('[WALLET] Requesting wallet connection...', 'log-info');
+        const response = await providerAdapter.connect();
+        walletPublicKey = response.publicKey;
+
+        const connection = new solanaWeb3.Connection("https://api.devnet.solana.com", "confirmed");
+        provider = new anchor.AnchorProvider(connection, providerAdapter, { commitment: "confirmed" });
+        program = new anchor.Program(IDL, provider);
+
+        const shortAddr = `${walletPublicKey.toBase58().slice(0, 4)}...${walletPublicKey.toBase58().slice(-4)}`;
+        
+        document.getElementById('wallet-status-badge').innerText = `Connected: ${shortAddr}`;
+        document.getElementById('wallet-status-badge').style.color = "var(--color-mint)";
+        document.getElementById('btn-connect-wallet').innerText = shortAddr;
+        document.getElementById('btn-connect-header').innerText = shortAddr;
+        
+        const harvestBtn = document.getElementById('btn-harvest');
+        harvestBtn.disabled = false;
+        harvestBtn.style.opacity = "1";
+
+        logToTerminal(`[WALLET] Successfully connected: ${walletPublicKey.toBase58()}`, 'log-success');
+      } catch (err) {
+        logToTerminal(`[ERROR] Connection failed: ${err.message}`, 'log-warn');
+      }
     }
 
-    function executeHarvest() {
-      logToTerminal('[TX] Constructing harvest_withheld_tokens instruction...', 'log-warn');
-      setTimeout(() => {
-        logToTerminal('[TX] Found 14 token accounts with withheld fees.', 'log-info');
-        logToTerminal('[SUCCESS] Executed Harvest! 70% Burned, 20% Bounty paid to caller, 10% Vault.', 'log-success');
-      }, 1200);
+    async function executeHarvestAndDistribute() {
+      if (!walletPublicKey || !program) {
+        logToTerminal('[ERROR] Wallet is not connected!', 'log-warn');
+        return;
+      }
+
+      try {
+        logToTerminal('[TX] Calculating Associated Token Accounts (ATA)...', 'log-info');
+
+        const callerTokenAccount = splToken.getAssociatedTokenAddressSync(
+          MINT,
+          walletPublicKey,
+          false,
+          splToken.TOKEN_2022_PROGRAM_ID
+        );
+
+        const treasuryTokenAccount = splToken.getAssociatedTokenAddressSync(
+          MINT,
+          TREASURY_PUBKEY,
+          false,
+          splToken.TOKEN_2022_PROGRAM_ID
+        );
+
+        const vault = splToken.getAssociatedTokenAddressSync(
+          MINT,
+          VAULT_AUTHORITY,
+          true,
+          splToken.TOKEN_2022_PROGRAM_ID
+        );
+
+        const remainingAccounts = FEE_SOURCE_ACCOUNTS.map((pubkey) => ({
+          pubkey,
+          isWritable: true,
+          isSigner: false,
+        }));
+
+        logToTerminal(`[TX] Sending transaction via ${walletPublicKey.toBase58().slice(0,6)}...`, 'log-warn');
+
+        const txSig = await program.methods
+          .harvestAndDistribute()
+          .accounts({
+            caller: walletPublicKey,
+            mint: MINT,
+            vault: vault,
+            vaultAuthority: VAULT_AUTHORITY,
+            callerTokenAccount: callerTokenAccount,
+            treasuryTokenAccount: treasuryTokenAccount,
+            tokenProgram: splToken.TOKEN_2022_PROGRAM_ID,
+          })
+          .remainingAccounts(remainingAccounts)
+          .rpc();
+
+        logToTerminal(`[SUCCESS] Transaction confirmed! Hash: ${txSig}`, 'log-success');
+        logToTerminal(`[EXPLORER] https://explorer.solana.com/tx/${txSig}?cluster=devnet`, 'log-info');
+      } catch (err) {
+        console.error(err);
+        logToTerminal(`[ERROR] Harvest failed: ${err.message}`, 'log-warn');
+      }
     }
 
-    function queryWithheldFees() {
-      logToTerminal('[RPC] Querying Token-2022 accounts on cluster...', 'log-info');
-      setTimeout(() => {
-        logToTerminal('[QUERY] Total Withheld Pool: 12,450.80 $pQT (~$622.54 USD)', 'log-success');
-      }, 800);
-    }
-
-    function simulateBounty() {
-      logToTerminal('[CALC] Estimating Crank Bounty reward...', 'log-info');
-      setTimeout(() => {
-        logToTerminal('[ESTIMATE] Expected Bounty Payout: 2,490.16 $pQT (20% of pool)', 'log-success');
-      }, 500);
+    function queryWithheldAccounts() {
+      logToTerminal(`[SCAN] Found ${FEE_SOURCE_ACCOUNTS.length} configured source account(s).`, 'log-info');
+      document.getElementById('stat-found-accounts').innerText = `Accounts with Fees: ${FEE_SOURCE_ACCOUNTS.length} Active`;
     }
   </script>
 </body>
