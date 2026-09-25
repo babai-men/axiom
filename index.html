@@ -7,7 +7,7 @@
   
   <!-- Solana Web3 & Anchor Client Libraries -->
   <script src="https://unpkg.com/@solana/web3.js@1.95.8/lib/index.iife.min.js"></script>
-  <script src="https://unpkg.com/@coral-xyz/anchor@0.30.1/dist/browser/anchor.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@coral-xyz/anchor@0.30.1/dist/browser/anchor.umd.js"></script>
   <script src="https://unpkg.com/@solana/spl-token@0.4.8/lib/index.iife.min.js"></script>
 
   <style>
@@ -270,7 +270,7 @@
       flex-wrap: wrap;
     }
 
-    /* Vector Banner Showcase */
+    /* Banner Showcase */
     .banner-section {
       margin: 10px 0 60px;
       display: flex;
@@ -430,19 +430,6 @@
       font-family: monospace;
       font-size: 13px;
       color: var(--color-cyan);
-    }
-
-    .btn-copy {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 12px;
-      transition: color 0.2s;
-    }
-
-    .btn-copy:hover {
-      color: var(--color-mint);
     }
 
     .console-grid {
@@ -1057,11 +1044,20 @@
 
     function logToTerminal(message, typeClass = 'log-info') {
       const terminal = document.getElementById('terminal');
+      if (!terminal) return;
       const logLine = document.createElement('div');
       logLine.className = `log-line ${typeClass}`;
       logLine.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
       terminal.appendChild(logLine);
       terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // Извлечение библиотеки Anchor из window без ошибок
+    function getAnchorLib() {
+      if (window.anchor) return window.anchor;
+      if (window.Anchor) return window.Anchor;
+      if (window.coral) return window.coral;
+      return null;
     }
 
     async function connectWallet() {
@@ -1073,13 +1069,21 @@
           return;
         }
 
+        const anchorLib = getAnchorLib();
+        if (!anchorLib) {
+          logToTerminal('[ERROR] Anchor library is not loaded properly from CDN.', 'log-warn');
+          alert('Ошибка загрузки библиотеки Anchor. Попробуйте обновить страницу.');
+          return;
+        }
+
         logToTerminal('[WALLET] Requesting wallet connection...', 'log-info');
         const response = await providerAdapter.connect();
         walletPublicKey = response.publicKey;
 
         const connection = new solanaWeb3.Connection("https://api.devnet.solana.com", "confirmed");
-        provider = new anchor.AnchorProvider(connection, providerAdapter, { commitment: "confirmed" });
-        program = new anchor.Program(IDL, provider);
+        
+        provider = new anchorLib.AnchorProvider(connection, providerAdapter, { commitment: "confirmed" });
+        program = new anchorLib.Program(IDL, provider);
 
         const shortAddr = `${walletPublicKey.toBase58().slice(0, 4)}...${walletPublicKey.toBase58().slice(-4)}`;
         
